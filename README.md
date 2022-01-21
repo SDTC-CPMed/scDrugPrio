@@ -15,3 +15,12 @@ precision for already approved drugs for the investigated diseases.
 
 Analysis was mainly conducted in R 3.4.4.
 Input data can be downloaded as described in PMID: XXXXX 
+
+### Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
+
+In order to better understand the interactions between differentially expressed genes and drug candidates, selected based on zc < -1.64 and dc z < 1, we created a 3D [visualisation](https://scpred.shinyapps.io/3D_network/). Interactions between DEGs (blue) are representing protein-protein interactions (PPI) described in the literature-curated PPI network by do Valle et al. Drug candidates are connected to their respective gene drug targets by edges. Potential drug candidates are shown in red. Established drugs for human rheumatoid arthritis are represented in yellow. The visualization was created in R version 4.1.1. The following R packages were used: igraph (1.2.6), plotly (4.10.0) and shiny (1.6.0).
+
+
+## References
+
+do Valle, I. F. et al. Network medicine framework shows that proximity of polyphenol targets and disease proteins predicts therapeutic effects of polyphenols. Nature Food 2, 143-155, doi:10.1038/s43016-021-00243-7 (2021).
