@@ -35,7 +35,7 @@ scRNA-seq data for multiple sclerosis patients were retrieved from GEO ()[^1]
 
 scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^2]
 
-Data was processed as described in ***REFERENCE TO PUBLISHED MANUSCRIPT***. Processed scRNA-seq data files are available in [data/](data).  
+Data was processed as described in ***REFERENCE TO PUBLISHED MANUSCRIPT***. Processed scRNA-seq data files are available in [data](data/).  
 
 ### Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
 
@@ -44,8 +44,8 @@ In order to better understand the interactions between DEGs and drug candidates,
 
 ## References
 
-[^1]: Schafflick, D. et al. Integrated single cell analysis of blood and cerebrospinal fluid leukocytes in multiple sclerosis. Nat Commun 11, 247, [](doi:10.1038/s41467-019-14118-w) (2020).
-[^2]: Martin, J. C. et al. Single-Cell Analysis of Crohn's Disease Lesions Identifies a Pathogenic Cellular Module Associated with Resistance to Anti-TNF Therapy. Cell 178, 1493-1508.e1420, [](doi:10.1016/j.cell.2019.08.008) (2019).
-[^3]: do Valle, I. F. et al. Network medicine framework shows that proximity of polyphenol targets and disease proteins predicts therapeutic effects of polyphenols. Nature Food 2, 143-155, [](doi:10.1038/s43016-021-00243-7) (2021).
+[^1]: Schafflick, D. et al. Integrated single cell analysis of blood and cerebrospinal fluid leukocytes in multiple sclerosis. Nat Commun 11, 247, doi:10.1038/s41467-019-14118-w (2020).
+[^2]: Martin, J. C. et al. Single-Cell Analysis of Crohn's Disease Lesions Identifies a Pathogenic Cellular Module Associated with Resistance to Anti-TNF Therapy. Cell 178, 1493-1508.e1420, doi:10.1016/j.cell.2019.08.008 (2019).
+[^3]: do Valle, I. F. et al. Network medicine framework shows that proximity of polyphenol targets and disease proteins predicts therapeutic effects of polyphenols. Nature Food 2, 143-155, doi:10.1038/s43016-021-00243-7 (2021).
 
 
