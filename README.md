@@ -18,7 +18,13 @@ Input data can be downloaded as described in PMID: XXXXX
 
 ### Introduction to scPred
 
-<br><br> ![](vignettes/Overview fig v4.png) <br><br>
+<br>
+<br> 
+<img src="vignettes/Overview fig v4.png" width="900" />
+<br>
+<br>
+
+
 
 ### Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
 
