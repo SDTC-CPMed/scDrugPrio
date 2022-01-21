@@ -31,7 +31,7 @@ Analysis was conducted in R 3.4.4 if not otherwise stated.
 
 scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be from GEO (GSE193536).
 
-scRNA-seq data for multiple sclerosis patients were retrieved from GEO ()[^1]
+scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^1]
 
 scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^2]
 
