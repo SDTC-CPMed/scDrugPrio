@@ -5,7 +5,7 @@ rmarkdown::render("README.Rmd",output_format = "md_document")
 
 # scPred: Network analyses of single cell-based digital twins for personalized treatment of inflammatory diseases
 
-##scPred: General information
+###scPred: General information
 The goal of scPred is the creation of multicellular network-based disease models 
 from single-cell RNA-sequencing (scRNA-seq) data for drug repositioning.
 scPred was developed using mouse data and validated in in vitro experiments 
