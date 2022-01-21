@@ -13,13 +13,7 @@ scPred was developed using mouse data and validated in in vitro experiments
 and by application to human scRNA-seq data consistently showing a high 
 precision for already approved drugs for the investigated diseases.
 
-### Introduction to scPred
-
-<br>
-<br> 
-<img src="vignettes/Overview fig v4.png" width="800" />
-<br>
-<br>
+### Introduction to scPred <br><br> <img src="vignettes/Overview fig v4.png" width="800" /> <br><br>
 
 scPred was developed based on scRNA-seq data from an antigen-induced arthritis mouse model and healthy controls (1), initial data analysis included denoising (2), clustering (3), cell typing and DEG calculation (4). The DEGs derived by comparison cells from healthy and sick mice were then used to create inter- and intracellular disease models. For intercellular disease models, interaction of differentially expressed upstream ligands and downstream genes were inferred using NicheNet ligand activity analysis (5). Based on the resulting cell-cell interaction network the centrality of each cell type, serving as a proxy for therapeutic importance, in the disease could be calculated (6). For intracellular disease models, the DEGs of a cell type alongside the drug targets of known drugs were mapped onto the human protein-protein interaction network and drug candidates for a cell type were selected based on network distance (7). Furthermore, as a proxy for the relevance of drug’s targets, centrality of the drug’s targets in the largest connected component (LCC) formed by a cell type’s DEGs was calculated (8). To rank all drugs, the combined drug target and intercellular centralities of drugs were calculated (9). Combined intercellular centrality score was the sum of the intercellular centrality scores of cell types in which the drug was a candidate. Combined drug target centrality was calculated as the geometric mean of the mean drug target centrality in all cell types in which this drug was selected as a candidate. Crossed out values in the table presenting the drug target and intercellular centrality indicate that a drug was not selected as a candidate in this cell type.
 
