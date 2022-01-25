@@ -21,6 +21,10 @@ scPred was developed based on scRNA-seq data from an antigen-induced arthritis m
 
 Analysis was conducted in R 3.4.4 if not otherwise stated.
 
+
+***PACKAGE VERSIONS***
+
+
 ### Input data
 
 scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be from GEO (GSE193536).
