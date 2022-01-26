@@ -44,7 +44,7 @@ In order to better understand the interactions between DEGs and drug candidates,
 
 ### Replication
 
-Deep Count Autoencoder (DCA)[^4] denoising was applied to each data set through calling the python application from the terminal. Necessary output files for DCA denoised data can be found in [data-raw](data-raw/).
+Deep Count Autoencoder (DCA)[^4] denoising was applied to each data set through calling the python application from the terminal. DCA adjusted files can be downloaded from [zenodo.com]() or by running ```data_analysis_and_formatting()``` which will download files and store them in the correct sub-directories of [data-raw](data-raw/).
 
 Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions:
 ```
