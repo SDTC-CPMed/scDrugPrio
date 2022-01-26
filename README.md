@@ -37,14 +37,15 @@ Data was processed as described in ***REFERENCE TO PUBLISHED MANUSCRIPT***. Proc
 
 ### Data processing
 
-Deep Count Autoencoder (DCA) denoising was applied to each data set through calling the python application from the terminal. Necessary output files for DCA denoised data can be found in [data-raw].
+Deep Count Autoencoder (DCA) denoising was applied to each data set through calling the python application from the terminal. Necessary output files for DCA denoised data can be found in [data-raw](data-raw/).
 
-Analysis of data sets can be replicated based on files provided in [data-raw] using the provided functions:
-´´´
+Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions:
+```
 replication_of_analysis_AIA_data()
 replication_of_analysis_MS_data()
 replication_of_analysis_CD_data()
-´´´
+```
+To increase computational speed, these functions will primarily access processed files provided in [data](data/). Replication of files in [data](data/) can be achieved by removal of files in the data directory prior to use of the above functions.    
 
 ### Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
 
