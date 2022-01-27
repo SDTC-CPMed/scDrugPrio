@@ -27,7 +27,7 @@ Analysis was conducted in R 3.4.4 if not otherwise stated.
 
 ### Input data
 
-scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be at [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536.
+scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536.
 
 scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^1]
 
