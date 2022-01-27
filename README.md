@@ -33,9 +33,9 @@ scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE13826
 
 scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^2]
 
-Data was processed as described in ***REFERENCE TO PUBLISHED MANUSCRIPT***. Processed scRNA-seq data files are available in [data](data/).  
-
 ### Data processing
+
+Data was processed as described in ***REFERENCE TO PUBLISHED MANUSCRIPT***.
 
 
 ### Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
