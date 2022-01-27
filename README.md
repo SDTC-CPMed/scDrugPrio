@@ -27,7 +27,7 @@ Analysis was conducted in R 3.4.4 if not otherwise stated.
 
 ### Input data
 
-scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be from GEO (GSE193536).
+scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be at Gene Expression Omnibus (GEO) using accessionnumber GSE193536.
 
 scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^1]
 
@@ -44,7 +44,7 @@ In order to better understand the interactions between DEGs and drug candidates,
 
 ### Replication
 
-Deep Count Autoencoder (DCA)[^4] denoising was applied to each data set through calling the python application from the terminal. DCA adjusted files can be manually downloaded from [zenodo.com]() ***INSERT LINK***.
+Deep Count Autoencoder (DCA)[^4] denoising was applied to each data set through calling the python application from the terminal. DCA adjusted files can be manually downloaded from [zenodo.com]() ***INSERT LINK***. Raw files can be found at the corresponding (GEO) repositories.
 
 Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions. If the DCA denoised data is not detected, functions will download the data and store it in the correct sub-directories of [data-raw](data-raw/).
 ```
