@@ -24,9 +24,6 @@ Analysis was conducted in R 3.4.4 if not otherwise stated.
 R packages were set up on a Linux machine for R 3.4.4, if problems occur during initial installation of packages use ```source("R/SETUP.R")```  to replicate the exact environment used for analysis.
 
 
-***PACKAGE VERSIONS***
-
-
 ### Input data
 
 scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536.
