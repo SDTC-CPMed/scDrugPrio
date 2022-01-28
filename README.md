@@ -21,6 +21,8 @@ scPred was developed based on scRNA-seq data from an antigen-induced arthritis m
 
 Analysis was conducted in R 3.4.4 if not otherwise stated.
 
+R packages were set up on a Linux machine for R 3.4.4, if problems occur during initial installation of packages use ```source("R/SETUP.R")```  to replicate the exact environment used for analysis.
+
 
 ***PACKAGE VERSIONS***
 
