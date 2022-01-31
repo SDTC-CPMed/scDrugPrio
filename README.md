@@ -43,16 +43,19 @@ scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE13826
 scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^2]
 
 ### Replication
+Deep Count Autoencoder (DCA)[^4] denoising was applied to each data set through calling the python application from the terminal. Raw expression data files can be found at the corresponding (GEO) repositories.
 
-Deep Count Autoencoder (DCA)[^4] denoising was applied to each data set through calling the python application from the terminal. DCA adjusted files can be manually downloaded from [zenodo.com]() ***INSERT LINK***. Raw files can be found at the corresponding (GEO) repositories.
-
-Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions. If the DCA denoised data is not detected, functions will download the data and store it in the correct sub-directories of [data-raw](data-raw/).
+Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions. Large data files such as DCA adjusted expression files were uploaded to [zenodo.com]() ***INSERT LINK***. If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from [zenodo.com]() ***INSERT LINK*** and store it in the correct sub-directories of [data-raw](data-raw/):
 ```
+source("inst/replication_of_analysis_AIA_data.R")
+source("inst/replication_of_analysis_MS_data.R")
+source("inst/replication_of_analysis_CD_data.R")
+source("inst/replication_of_analysis_INDIVIDUAL_CD_data.R")
 replication_of_analysis_AIA_data()
 replication_of_analysis_MS_data()
 replication_of_analysis_CD_data()
+replication_of_analysis_INDIVIDUAL_CD_data()
 ```
-To increase computational speed, these functions will primarily access processed files provided in [data](data/). Replication of files in [data](data/) can be achieved by removal of files in the data directory prior to use of the above functions.    
 
 ### Example workflow
 
