@@ -1,0 +1,28 @@
+---
+title: "Sample workflow in scPred"
+author: "Samuel Schaefer"
+date: 2022-01-26
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{sample_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Install package from GitHub
+
+```{r setup}
+devtools::install_github("SDTC-CPMed/scPred")
+
+library(scPred)
+```
+
+# Format data for project
+
