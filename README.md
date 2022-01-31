@@ -21,7 +21,7 @@ scPred was developed based on scRNA-seq data from an antigen-induced arthritis m
 
 Analysis was conducted in R 3.6.3 if not otherwise stated.
 
-Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igraph (>= 1.2.6), doParallel, CINNA (>= 1.1.51), reshape2 (>= 1.4.4), ggplot2 (>= 3.3.5), nichenetr (>= 1.0.0)
+Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igraph (>= 1.2.6), doParallel (>= 1.0.15), CINNA (>= 1.1.51), reshape2 (>= 1.4.4), ggplot2 (>= 3.3.5), nichenetr (>= 1.0.0), MAST (>= 1.19.0) 
 
 Suggested packages: RCurl, GEOquery, KEGGREST, KEGGgraph, devtools
 
