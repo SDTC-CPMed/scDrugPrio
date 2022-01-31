@@ -23,6 +23,15 @@ Analysis was conducted in R 3.4.4 if not otherwise stated.
 
 R packages were set up on a Linux machine for R 3.6.3, if problems occur during initial installation of packages use ```source("R/SETUP.R")```  to replicate the exact environment used for analysis.
 
+Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igraph (>= 1.2.6), doParallel, CINNA (>= 1.1.51), reshape2 (>= 1.4.4), ggplot2 (>= 3.3.5), nichenetr (>= 1.0.0)
+Suggested packages: RCurl, GEOquery, KEGGREST, KEGGgraph, devtools
+
+### Installation of scPred
+
+```
+{R] install.packages("devtools")
+devtools::install_github("SDTC-CPMed/scPred")
+```
 
 ### Input data
 
@@ -31,15 +40,6 @@ scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthr
 scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^1]
 
 scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^2]
-
-### Data processing
-
-Data was processed as described in ***REFERENCE TO PUBLISHED MANUSCRIPT***.
-
-
-### Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
-
-In order to better understand the interactions between DEGs and drug candidates, selected based on zc < -1.64 and dc < 1, we created a 3D [visualisation](https://scpred.shinyapps.io/3D_network/) for the most central cell type (plasma cells) in the antigen induced arthritis mouse data. Interactions between DEGs (blue) are representing protein-protein interactions (PPI) described in the literature-curated PPI network by do Valle et al.[^3]. DEGs node size is based on fold change. Drug candidates are connected to their respective gene drug targets by edges. Potential drug candidates are shown in red. Established drugs for human rheumatoid arthritis are represented in yellow. The higher the absolute value of a drugs Y-axis value the higher the drug rank. Drug candidates that counteracted at least one DEGs fold change received positive Y-axis values while drug candidates that did not counteract the fold change of any targeted DEG received negative Y-axis values. By clicking on one of the nodes, the neighbouring nodes are highlighted. The visualization was created in R version 4.1.1. The following R packages were used: igraph (1.2.6), plotly (4.10.0), shiny (1.6.0) and shinyjs (2.0.0).
 
 ### Replication
 
@@ -53,6 +53,14 @@ replication_of_analysis_CD_data()
 ```
 To increase computational speed, these functions will primarily access processed files provided in [data](data/). Replication of files in [data](data/) can be achieved by removal of files in the data directory prior to use of the above functions.    
 
+### Example workflow
+
+To learn how to apply scPred to create multicellular digital twins for pharmacological predictions please refer to the vigenette below:
+* [Workflow for scPred application to scRNA-seq data sets](vignettes/sample_workflow.Rmd)
+
+### Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
+
+In order to better understand the interactions between DEGs and drug candidates, selected based on zc < -1.64 and dc < 1, we created a 3D [visualisation](https://scpred.shinyapps.io/3D_network/) for the most central cell type (plasma cells) in the antigen induced arthritis mouse data. Interactions between DEGs (blue) are representing protein-protein interactions (PPI) described in the literature-curated PPI network by do Valle et al.[^3]. DEGs node size is based on fold change. Drug candidates are connected to their respective gene drug targets by edges. Potential drug candidates are shown in red. Established drugs for human rheumatoid arthritis are represented in yellow. The higher the absolute value of a drugs Y-axis value the higher the drug rank. Drug candidates that counteracted at least one DEGs fold change received positive Y-axis values while drug candidates that did not counteract the fold change of any targeted DEG received negative Y-axis values. By clicking on one of the nodes, the neighbouring nodes are highlighted. The visualization was created in R version 4.1.1. The following R packages were used: igraph (1.2.6), plotly (4.10.0), shiny (1.6.0) and shinyjs (2.0.0).
 
 ## References
 
