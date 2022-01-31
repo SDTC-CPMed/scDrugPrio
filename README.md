@@ -45,7 +45,7 @@ Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igrap
 
 Suggested packages: RCurl, GEOquery, KEGGREST, KEGGgraph, devtools.
 
-If problems occur during installation of dependencies please locate [SETUP.R](inst/SETUP.R), download it and ```source("R/SETUP.R")``` to install the correct package versions.
+If problems occur during installation of dependencies please locate [SETUP.R](inst/SETUP.R), download it and ```source("scPred/inst/SETUP.R")``` to install the correct package versions.
 
 ## Installation of scPred
 
