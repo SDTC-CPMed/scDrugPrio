@@ -29,8 +29,8 @@ If problems occur during installation of dependencies please locate [SETUP.R](in
 
 ### Installation of scPred
 
-```
-{R] install.packages("devtools")
+```{R}
+install.packages("devtools")
 devtools::install_github("SDTC-CPMed/scPred")
 ```
 
