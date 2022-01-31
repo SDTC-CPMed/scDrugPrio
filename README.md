@@ -19,13 +19,13 @@ scPred was developed based on scRNA-seq data from an antigen-induced arthritis m
 
 ### R environment of scPred
 
-Analysis was conducted in R 3.4.4 if not otherwise stated.
-
-R packages were set up on a Linux machine for R 3.6.3, if problems occur during initial installation of packages use ```source("R/SETUP.R")```  to replicate the exact environment used for analysis.
+Analysis was conducted in R 3.6.3 if not otherwise stated.
 
 Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igraph (>= 1.2.6), doParallel, CINNA (>= 1.1.51), reshape2 (>= 1.4.4), ggplot2 (>= 3.3.5), nichenetr (>= 1.0.0)
 
 Suggested packages: RCurl, GEOquery, KEGGREST, KEGGgraph, devtools
+
+If problems occur during installation of dependencies please locate [SETUP.R](inst/SETUP.R), download it and ```source("R/SETUP.R")``` to install the correct package versions.
 
 ### Installation of scPred
 
