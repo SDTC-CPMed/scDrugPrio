@@ -4,7 +4,7 @@
 -->
 
 # scPred: Network analyses of single cell-based digital twins for personalized treatment of inflammatory diseases
-**S**wedish **D**igital **T**win **C**onsortium **-** **C**entre **P**recision **M**edicine
+**S**wedish **D**igital **T**win **C**onsortium **-** **C**entre **P**ersonalized **M**edicine
 
 ## scPred: General information
 
