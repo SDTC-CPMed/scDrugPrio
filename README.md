@@ -16,9 +16,7 @@ scPred was developed based on scRNA-seq data from an antigen-induced arthritis m
 ## Intercellular disease models / Multicellular disease models (MCDMs)
 
 After scRNA-seq data had been denoised, clustered and differentially expressed genes (DEGs) had been calculated we applied [NicheNet](https://github.com/saeyslab/nichenetr)[^1] to select ligand-target interactions between cell types that were predictive of the transcriptomic perturbation observed in the downstream cell type. This allowed creation of a directed multicellular disease model which reflected the altered information flow in disease. Using centrality in the MCDM we were able to rank cell types by their relative importance, which correlated well with the significance of GWAS enrichment among the DEGs of a cell type and the prediction precision for disease-relevant drugs.
-
-# *** INSERT FIGRUE OF MCDM AIA ***
-<br><br> <img src="vignettes/MCDM_fig.png" width="600" /> <br><br>
+<br><br> <img src="vignettes/MCDM_figure_GitHub.png" width="600" /> <br><br>
 
 ## Intracellular disease models
 
