@@ -66,7 +66,7 @@ Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Onli
 ## Example workflow
 
 To learn how to apply scPred to create multicellular digital twins for pharmacological predictions please refer to the vigenette:
-* [Workflow for scPred application to scRNA-seq data sets](vignettes/sample_workflow.md)
+* [Workflow for scPred application to scRNA-seq data sets](vignettes/sample_workflow_scPred.md)
 
 ## Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
 
