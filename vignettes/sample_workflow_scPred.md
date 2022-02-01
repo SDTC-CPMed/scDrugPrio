@@ -14,13 +14,21 @@ input data, create intercellular and intracellular disease models,
 select drug candidates for each cell type and create a final ranking for
 all the candidates.
 
-Workflow of scPred: 1. Setup - Installation of scPred 2. Data formatting
-- Make drug target matrix - Extract largest connected component (LCC) of
-protein-protein interaction network (PPIN) - Select unique drug target
-combinations found in LCC of PPIN 3. Deep count autoencoder denoising of
-expression data 4. Formatting of single cell RNA-sequencing data -
-Seurat for clustering - MAST framework for calculation of differentially
-expressed genes - Cell typing using marker genes 5.
+Workflow of scPred:
+
+1.  Setup
+    -   Installation of scPred
+2.  Data formatting
+    -   Make drug target matrix
+    -   Extract largest connected component (LCC) of protein-protein
+        interaction network (PPIN)
+    -   Select unique drug target combinations found in LCC of PPIN
+3.  Deep count autoencoder denoising of expression data
+4.  Formatting of single cell RNA-sequencing data
+    -   Seurat for clustering
+    -   MAST framework for calculation of differentially expressed genes
+    -   Cell typing using marker genes
+5.  
 
 This vignette guides you in detail through all these steps. As example
 data, we are using the scRNA-seq data for the antigen induced arthritis
