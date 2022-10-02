@@ -1,6 +1,6 @@
-Package: scPred
+Package: scDrugPrio
 Type: Package
-Title: scPred: Network analyses of single cell-based digital twins for personalized treatment 
+Title: scDrugPrio: Network analyses of single cell-based digital twins for personalized treatment 
 Version: 1.0.0
 Authors@R: person("Samuel", "Schaefer", email= "samuel.schafer@liu.se", role = c("aut", "cre"))
 Author: Samuel Schaefer [aut, cre]
@@ -10,24 +10,24 @@ Description: More about what it does (maybe more than one line)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/SDTC-CPMed/scPred
-BugReports: https://github.com/SDTC-CPMed/scPred/issues
-RoxygenNote: 7.1.2
+URL: https://github.com/SDTC-CPMed/scDrugPrio
+BugReports: https://github.com/SDTC-CPMed/scDrugPrio/issues
+RoxygenNote: 7.2.1
 Depends: R (>= 3.4.4)
 Imports:
   dplyr (>= 1.0.7),
   Seurat (>= 3.1.0),
   R.filesets (>= 2.12.1),
   igraph (>= 1.2.6),
-  doParallel,
+  doParallel (>= 1.0.15),
   CINNA (>= 1.1.51),
-  reshape,
-  ggplot2,
-  nichenetr
+  reshape2 (>= 1.4.4),
+  ggplot2 (>= 3.3.5), 
+  nichenetr (>= 1.0.0),
+  MAST (>= 1.19.0) 
 Suggests: 
     RCurl,
     GEOquery,
     KEGGREST,
     KEGGgraph,
     devtools
-VignetteBuilder: knitr
