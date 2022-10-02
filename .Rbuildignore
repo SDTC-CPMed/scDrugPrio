@@ -2,4 +2,4 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^README-.*\.png$
-^\.Raw_project_codes$
+^\Raw_project_codes$
