@@ -3,15 +3,15 @@
 #2022-01-21 
 -->
 
-# scPred: Network analyses of single cell-based digital twins for personalized treatment of inflammatory diseases
+# scDrugPrio: Network analyses of single cell-based digital twins for personalized treatment of inflammatory diseases
 **S**wedish **D**igital **T**win **C**onsortium **-** **C**enter for **P**ersonalized **M**edicine
 
-## scPred: General information
+## scDrugPrio: General information
 
-scPred presents a strategy for drug repositioning based on scRNA-seq based, multidimensional and multicellular disease models that incorporate the key biological and pharmacological properties. scPred was primarily developed using data from a mouse model (antigen induced arthritis, AIA) of rheumatoid arthritis (RA) and validated in *in vitro* experiments and by prediction precision for known drug-disease pairs in AIA and two human scRNA-seq data sets (multiple sclerosis, MS, and Crohn's disease, CD). *In vitro* experiments aimed to validate five repurposing candidate drugs that had no prior evidence in AIA or rheumatoid arthritis. Two of five tested candidates, along with the positive controll showed significant *in vitro* effect. The relevance of predicted candidates was further validated by predictions consistently reaching high precision for disease-relevant drugs (defined as drugs that were approved for treatment of respective disease). When applied to human multiple sclerosis and Crohn’s disease, scPred was able to stratify predicted treatments based on individual variations. We hence propose scPred as a solution to personalise treatment by projecting network-based drug screening to digital twins of individual patients on cellulome-, genome-and drugome-wide scales.
+scDrugPrio presents a strategy for drug repositioning based on scRNA-seq based, multidimensional and multicellular disease models that incorporate the key biological and pharmacological properties. scDrugPrio was primarily developed using data from a mouse model (antigen induced arthritis, AIA) of rheumatoid arthritis (RA) and validated in *in vitro* experiments and by prediction precision for known drug-disease pairs in AIA and two human scRNA-seq data sets (multiple sclerosis, MS, and Crohn's disease, CD). *In vitro* experiments aimed to validate five repurposing candidate drugs that had no prior evidence in AIA or rheumatoid arthritis. Two of five tested candidates, along with the positive controll showed significant *in vitro* effect. The relevance of predicted candidates was further validated by predictions consistently reaching high precision for disease-relevant drugs (defined as drugs that were approved for treatment of respective disease). When applied to human multiple sclerosis and Crohn’s disease, scDrugPrio was able to stratify predicted treatments based on individual variations. We hence propose scDrugPrio as a solution to personalise treatment by projecting network-based drug screening to digital twins of individual patients on cellulome-, genome-and drugome-wide scales.
 
 ## Overview <br><br> <img src="vignettes/Overview fig v4.jpeg" width="800" /> <br><br>
-scPred was developed based on scRNA-seq data from an antigen-induced arthritis mouse model and healthy controls (1), initial data analysis included denoising (2), clustering (3), cell typing and DEG calculation (4). The DEGs derived by comparison cells from healthy and sick mice were then used to create inter- and intracellular disease models. For intercellular disease models, interaction of differentially expressed upstream ligands and downstream genes were inferred using NicheNet ligand activity analysis (5). Based on the resulting cell-cell interaction network the centrality of each cell type, serving as a proxy for therapeutic importance, in the disease could be calculated (6). For intracellular disease models, the DEGs of a cell type alongside the drug targets of known drugs were mapped onto the human protein-protein interaction network and drug candidates for a cell type were selected based on network distance (7). Furthermore, as a proxy for the relevance of drug’s targets, centrality of the drug’s targets in the largest connected component (LCC) formed by a cell type’s DEGs was calculated (8). To rank all drugs, the combined drug target and intercellular centralities of drugs were calculated (9). Combined intercellular centrality score was the sum of the intercellular centrality scores of cell types in which the drug was a candidate. Combined drug target centrality was calculated as the geometric mean of the mean drug target centrality in all cell types in which this drug was selected as a candidate. Crossed out values in the table presenting the drug target and intercellular centrality indicate that a drug was not selected as a candidate in this cell type.
+scDrugPrio was developed based on scRNA-seq data from an antigen-induced arthritis mouse model and healthy controls (1), initial data analysis included denoising (2), clustering (3), cell typing and DEG calculation (4). The DEGs derived by comparison cells from healthy and sick mice were then used to create inter- and intracellular disease models. For intercellular disease models, interaction of differentially expressed upstream ligands and downstream genes were inferred using NicheNet ligand activity analysis (5). Based on the resulting cell-cell interaction network the centrality of each cell type, serving as a proxy for therapeutic importance, in the disease could be calculated (6). For intracellular disease models, the DEGs of a cell type alongside the drug targets of known drugs were mapped onto the human protein-protein interaction network and drug candidates for a cell type were selected based on network distance (7). Furthermore, as a proxy for the relevance of drug’s targets, centrality of the drug’s targets in the largest connected component (LCC) formed by a cell type’s DEGs was calculated (8). To rank all drugs, the combined drug target and intercellular centralities of drugs were calculated (9). Combined intercellular centrality score was the sum of the intercellular centrality scores of cell types in which the drug was a candidate. Combined drug target centrality was calculated as the geometric mean of the mean drug target centrality in all cell types in which this drug was selected as a candidate. Crossed out values in the table presenting the drug target and intercellular centrality indicate that a drug was not selected as a candidate in this cell type.
 
 ## Intercellular disease models / Multicellular disease models (MCDMs)
 
@@ -31,11 +31,11 @@ Drug candidates were selected for each cell type individually based on network p
 
 ## Drug candidate ranking
 
-While intracellular disease models, including the biopharmacological properties of the drugs and centrality of drug targets in the cell type specific disease models, were used to understand the pharmacological potential of a drug on a given cell type intercellular disease models were used to set each cell type into a context of relative importance for the collective disease. To rank drugs accordingly, we calculated the sum of all cell types eigenvector centrality in which a drug was considered to be a candidate. This combined intercellular eigenvector centrality served as a measure of the general importance of the targeted cell types in the MCDM. Next, we calculated the mean of a drug candidates intracellular eigenvector centrality over all cell types in which the drug was considered a candidate to derive a measure indicative of the average pharmacological potential of a drug on the targeted cell types. Final ranking was primarily based on the combined intercellular centrality score and secondly the mean of the intracellular eigenvector centrality. For more detail we refer the reader to the publication acompanying scPred ***LINK TO OUR PUBLICATION / PREPRINT***.
+While intracellular disease models, including the biopharmacological properties of the drugs and centrality of drug targets in the cell type specific disease models, were used to understand the pharmacological potential of a drug on a given cell type intercellular disease models were used to set each cell type into a context of relative importance for the collective disease. To rank drugs accordingly, we calculated the sum of all cell types eigenvector centrality in which a drug was considered to be a candidate. This combined intercellular eigenvector centrality served as a measure of the general importance of the targeted cell types in the MCDM. Next, we calculated the mean of a drug candidates intracellular eigenvector centrality over all cell types in which the drug was considered a candidate to derive a measure indicative of the average pharmacological potential of a drug on the targeted cell types. Final ranking was primarily based on the combined intercellular centrality score and secondly the mean of the intracellular eigenvector centrality. For more detail we refer the reader to the publication acompanying scDrugPrio ***LINK TO OUR PUBLICATION / PREPRINT***.
 
 # Setup
 
-## R environment of scPred
+## R environment of scDrugPrio
 
 Analysis was conducted in R 3.6.3 if not otherwise stated. Apart from DEG calculation using the MAST package which requires R >= 3.5, this package is compatible with R >= 3.4.
 
@@ -43,13 +43,13 @@ Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igrap
 
 Suggested packages: RCurl, GEOquery, KEGGREST, KEGGgraph, devtools.
 
-If problems occur during installation of dependencies please locate [SETUP.R](inst/SETUP.R), download it and ```source("scPred/inst/SETUP.R")``` to install the correct package versions.
+If problems occur during installation of dependencies please locate [SETUP.R](inst/SETUP.R), download it and ```source("scDrugPrio/inst/SETUP.R")``` to install the correct package versions.
 
-## Installation of scPred
+## Installation of scDrugPrio
 
 ```{R}
 install.packages("devtools")
-devtools::install_github("SDTC-CPMed/scPred")
+devtools::install_github("SDTC-CPMed/scDrugPrio")
 ```
 
 ## Input data
@@ -64,8 +64,8 @@ Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Onli
 
 ## Example workflow
 
-To learn how to apply scPred to create multicellular digital twins for pharmacological predictions please refer to the vigenette:
-* [Workflow for scPred application to scRNA-seq data sets](vignettes/sample_workflow_scPred.md)
+To learn how to apply scDrugPrio to create multicellular digital twins for pharmacological predictions please refer to the vigenette:
+* [Workflow for scDrugPrio application to scRNA-seq data sets](vignettes/sample_workflow_scDrugPrio.md)
 
 ## Creation of 3D network visualization for interaction between plasma cell DEGs and drug candidates
 
