@@ -1,0 +1,58 @@
+DrugBank_ID	Drug_name	Drug_description
+DB01281	Abatacept	A disease-modifying antirheumatic drug (DMARD) used for the management of moderate-to-severe active rheumatoid arthritis and active polyarticular juvenile idiopathic arthritis as monotherapy or in combination with other DMARDs.
+DB00945	Acetylsalicylic acid	A salicylate used to treat pain, fever, inflammation, migraines, and reducing the risk of major adverse cardiovascular events.
+DB00051	Adalimumab	A monoclonal anti-tumor necrosis factor alpha antibody used in the treatment of a wide variety of inflammatory conditions such as rheumatoid arthritis, Crohn's disease, and ankylosing spondylitis.
+DB13167	Alclofenac	
+DB00026	Anakinra	A recombinant form of human interleukin-1 receptor antagonist used in the treatment of rheumatoid arthritis and neonatal-onset multisystem inflammatory disease.
+DB00995	Auranofin	An antirheumatic used to treat active, progressive, or destructive forms of inflammatory arthritis.
+DB00993	Azathioprine	An immunosuppressant used to prevent renal transplant rejection, treat rheumatoid arthritis, Crohn's disease, and ulcerative colitis.
+DB11817	Baricitinib	A Janus kinase inhibitor used to treat moderate to severe rheumatoid arthritis that has responded poorly to at least one TNF antagonist.
+DB00443	Betamethasone	A systemic corticosteroid used to relieve inflammation in various conditions, including but not limited to allergic states, dermatologic disorders, gastrointestinal diseases, and hematological disorders.
+DB00297	Bupivacaine	A local anesthetic used in a wide variety of superficial and invasive procedures.
+DB00482	Celecoxib	An NSAID used to treat osteoarthritis, rheumatoid arthritis, acute pain, menstrual symptoms, and to reduce polyps is familial adenomatous polyposis.
+DB08904	Certolizumab pegol	A tumor necrosis factor (TNF) blocker used to treat a variety of autoimmune and autoinflammatory conditions like Crohn's disease, rheumatoid arthritis, active psoriatic arthritis, ankylosing spondylitis, axial spondyloarthritis, and plaque psoriasis.
+DB00608	Chloroquine	An antimalarial drug used to treat susceptible infections with P. vivax, P. malariae, P. ovale, and P. falciparum. It is also used for second line treatment for rheumatoid arthritis.
+DB01401	Choline magnesium trisalicylate	Choline magnesium trisalicylate is used to reduce pain and inflammation caused by conditions such as arthritis. This medication is also used to treat fever in adults.
+DB01285	Corticotropin	A diagnostic agent used in the screening of patients presumed to have adrenocortical insufficiency.
+DB01380	Cortisone acetate	A steroid hormone used for the relief of the inflammatory and pruritic manifestations of corticosteroid-responsive dermatoses and endocrine disorders associated with inadequate production of steroid hormones.
+DB00091	Cyclosporine	A steroid-sparing immunosuppressant used in organ and bone marrow transplants as well as inflammatory conditions such as ulcerative colitis, rheumatoid arthritis, and atopic dermatitis.
+DB01234	Dexamethasone	A glucocorticoid available in various modes of administration that is used for the treatment of various inflammatory conditions, including bronchial asthma, as well as endocrine and rheumatic disorders.
+DB00586	Diclofenac	An NSAID used to treat the signs and symptoms of osteoarthritis and rheumatoid arthritis.
+DB00861	Diflunisal	An NSAID used to treat mild to moderate pain, inflammation, osteoarthritis, and rheumatoid arthritis.
+DB00005	Etanercept	A protein therapy based on the binding fragment of the tumour necrosis factor alpha receptor used to treat severe rheumatoid arthritis and moderate to severe plaque psoriasis.
+DB00749	Etodolac	An NSAID used to treat osteoarthritis and rheumatoid arthritis, as well as acute pain.
+DB01628	Etoricoxib	
+DB00573	Fenoprofen	An anti-inflammatory analgesic used to treat mild to moderate pain in addition to the signs and symptoms of rheumatoid arthritis and osteoarthritis.
+DB00712	Flurbiprofen	An NSAID used to treat the signs and symptoms of osteoarthritis and rheumatoid arthritis.
+DB06674	Golimumab	A TNF? inhibitor used in the symptomatic treatment of various active inflammatory disorders, such as rheumatoid arthritis, psoriatic arthritis, ankylosing spondylitis, and ulcerative colitis.
+DB00741	Hydrocortisone	A glucocorticoid used to treat corticosteroid-responsive dermatoses, endocrine disorders, immune conditions, and allergic disorders.
+DB14539	Hydrocortisone acetate	A corticosteroid used to treat inflammatory and pruritic corticosteroid-responsive dermatoses and ulcerative colitis.
+DB01611	Hydroxychloroquine	An antimalarial medication used to treat uncomplicated cases of malaria and for chemoprophylaxis in specific regions. Also a disease modifying anti-rheumatic drug (DMARD) indicated for treatment of rheumatoid arthritis and lupus erythematosus.
+DB01050	Ibuprofen	An NSAID and non-selective COX inhibitor used to treat mild-moderate pain, fever, and inflammation.
+DB00328	Indomethacin	A nonsteroidal anti-inflammatory (NSAID) used for symptomatic management of chronic musculoskeletal pain conditions and to induce closure of a hemodynamically significant patent ductus arteriosus in premature infants.
+DB00065	Infliximab	A monoclonal anti tumor necrosis factor alpha antibody used in the treatment of a wide variety of inflammatory conditions such as rheumatoid arthritis, Crohn's disease, and ankylosing spondylitis.
+DB01009	Ketoprofen	An NSAID used to treat rheumatoid arthritis, osteoarthritis, ankylosing spondylitis, dysmenorrhea, mild to moderate muscle pain, postoperative pain, and postpartum pain.
+DB01097	Leflunomide	A pyrimidine synthesis inhibitor indicated to treat rheumatoid arthritis.
+DB00939	Meclofenamic acid	An NSAID used to treat mild to moderate pain, primary dysmenorrhea, heavy menstrual blood loss, rheumatoid arthritis, and osteoarthritis.
+DB00814	Meloxicam	An NSAID used to treat osteoarthritis in adults, rheumatoid arthritis in adults, and juvenile rheumatoid arthritis in pediatrics.
+DB00563	Methotrexate	An antineoplastic agent used the treatment of a wide variety of cancers as well as severe psoriasis, severe rheumatoid arthritis, and juvenile rheumatoid arthritis.
+DB00959	Methylprednisolone	A corticosteroid used to treat inflammation or immune reactions across a variety of organ systems, endocrine conditions, and neoplastic diseases.
+DB00461	Nabumetone	An NSAID used to treat osteoarthritis and rheumatoid arthritis.
+DB00788	Naproxen	An NSAID used to treat rheumatoid arthritis, osteoarthritis, ankylosing spondylitis, polyarticular juvenile idiopathic arthritis, tendinitis, bursitis, acute gout, primary dysmenorrhea, and mild to moderate pain.
+DB00991	Oxaprozin	An NSAID used to treat osteoarthritis, rheumatoid arthritis, and juvenile rheumatoid arthritis.
+DB00812	Phenylbutazone	
+DB00554	Piroxicam	An NSAID used to treat the symptoms of osteoarthritis and rheumatoid arthritis.
+DB00860	Prednisolone	A glucocorticoid used to treat adrenocortical insufficiency, inflammatory conditions, and some cancers.
+DB00635	Prednisone	A corticosteroid used to treat inflammation or immune-mediated reactions and to treat endocrine or neoplastic diseases.
+DB00863	Ranitidine	A histamine H2 antagonist used to treat duodenal ulcers, Zollinger-Ellison syndrome, gastric ulcers, GERD, and erosive esophagitis.
+DB00073	Rituximab	A monoclonal anti-CD20 antibody used to treat non-Hodgkin's lymphoma, chronic lymphocytic leukemia, Wegener's granulomatosis, pemphigus vulgaris, and rheumatoid arthritis.
+DB11767	Sarilumab	A monoclonal antibody used to treat moderate to severe rheumatoid arthritis who have responded poorly or are intolerant of other DMARDs.
+DB00795	Sulfasalazine	An anti-inflammatory drug used to treat Crohn's disease and rheumatoid arthritis.
+DB00605	Sulindac	An NSAID used to treat osteoarthritis, rheumatoid arthritis, ankylosing spondylitis, acute subacromial bursitis or supraspinatus tendinitis, and acute gouty arthritis.
+DB00864	Tacrolimus	A calcineurin inhibitor used to prevent organ transplant rejection and to treat moderate to severe atopic dermatitis.
+DB00469	Tenoxicam	An anti inflammatory analgesic used to treat mild to moderate pain as well as the signs and symptoms of rheumatoid arthritis and osteoarthritis.
+DB01600	Tiaprofenic acid	A nonsteroidal anti-inflammatory (NSAID) used to manage inflammation and analgesia associated with rheumatoid arthritis and osteoarthritis.
+DB06273	Tocilizumab	Indicated for the treatment of adult patients with moderately to severely active rheumatoid arthritis (RA) who have had an inadequate response to one or more Disease-Modifying Anti-Rheumatic Drugs (DMARDs).
+DB08895	Tofacitinib	A Janus kinase (JAK) inhibitor used to treat rheumatoid and psoriatic arthritis, and ulcerative colitis. It is not recommended to be combined with biologic therapies or potent immunosuppressants like cyclosporine or azathioprine.
+DB00500	Tolmetin	An NSAID used to treat acute flares of various painful conditions and used for the long term management of osteoarthritis, rheumatoid arthritis, and juvenile arthritis.
+DB00620	Triamcinolone	A glucocorticoid used to treat a wide variety of inflammatory conditions of organ systems and tissues.
