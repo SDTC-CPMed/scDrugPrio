@@ -60,7 +60,7 @@ scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE13826
 
 scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]
 
-Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases as well as meta-data for scRNA-seq files can be found in [data-raw](data-raw/) or on [figshare](10.6084/m9.figshare.21785333). For raw data sets we refer the reader to the original data sources.
+Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases as well as meta-data for scRNA-seq files can be found in [data-raw](data-raw/) or on [figshare](https://figshare.com/s/d75d0136702ba324c1d2). For raw data sets we refer the reader to the original data sources.
 
 ## Example workflow
 
@@ -74,7 +74,7 @@ In order to better understand the interactions between DEGs and drug candidates,
 # Replication
 Deep Count Autoencoder (DCA)[^12] denoising was applied to each data set through calling the python application from the terminal. Raw expression data files can be found at the corresponding (GEO) repositories.
 
-Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions. Large data files such as DCA adjusted expression files were uploaded to [zenodo.com]() ***INSERT LINK***. If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from [zenodo.com]() ***INSERT LINK*** and store it in the correct sub-directories of [data-raw](data-raw/):
+Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions. Large data files such as DCA adjusted expression files were uploaded to [figshare](https://figshare.com/s/d75d0136702ba324c1d2). If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from [figshare](https://figshare.com/s/d75d0136702ba324c1d2) and store it in the correct sub-directories of [data-raw](data-raw/):
 ```
 # AIA data
 source("inst/replication_of_analysis_AIA_data.R")
