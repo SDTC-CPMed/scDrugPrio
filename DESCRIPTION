@@ -12,7 +12,7 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/SDTC-CPMed/scDrugPrio
 BugReports: https://github.com/SDTC-CPMed/scDrugPrio/issues
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Depends: R (>= 3.4.4)
 Imports:
   dplyr (>= 1.0.7),
