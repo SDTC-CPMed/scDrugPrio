@@ -13,7 +13,8 @@
 #' @param out_dir character string; specifying output directory.
 #' @param cores number of cores used for computing.
 #'
-#' @export Creates evaluation files for every element in `files` that can be used for manual evaluation of whether drugs counteract the fold change of targeted DEGs.
+#' @export
+#' @return Creates evaluation files for every element in `files` that can be used for manual evaluation of whether drugs counteract the fold change of targeted DEGs.
 #'
 summary_network_proximity_calculation <- function(files,
                                                   deg_files,

@@ -8,7 +8,7 @@
 #' @param lr_network Matrix. If NULL, the standard information from NicheNet will be downloaded: https://zenodo.org/record/3260758/files/lr_network.rds
 #' @param cores Integer. Number of cores to be used in parallel computing. Defaults to number of cores available - 1.
 #' @param only_pos Boolean. By default this function returns only ligand interactions with positive Pearsson coefficients, given that these symbolize a interaction between the ligand and the DEGs in the downstream cell type. Negative Pearsson coefficients instead symbolize a interaction between the ligand and the background gene of the downstream cell type.
-#' @return
+#' @return Returns a matrix for all ligand interactions between all possible cell types / clusters.
 #' @export
 #'
 #'
@@ -17,7 +17,7 @@ NicheNet_ligand_activity_analysis <- function(degs,
                                               out_dir = "",
                                               ligand_target = NULL,
                                               lr_network = NULL,
-                                              cores = 1, 
+                                              cores = 1,
                                               only_pos = T){
 
   set.seed(35)
@@ -129,11 +129,11 @@ NicheNet_ligand_activity_analysis <- function(degs,
       out <- matrix(NA, nrow = 1, ncol = 6)
       colnames(out) <- c("test_ligand", "auroc", "aupr", "pearson", "", "")
     }
-    
+
     print(i)
     print(dim(out))
     print(colnames(out))
-    
+
     return(out)
   }
   all_ligand_activity <- all_ligand_activity[!is.na(all_ligand_activity[,1]),]
