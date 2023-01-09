@@ -37,10 +37,10 @@ load_sample_data <- function(){
   data("denoised_DCA_4", package = "scDrugPrio")
   data("denoised_DCA_5", package = "scDrugPrio")
   data("denoised_DCA_6", package = "scDrugPrio")
-
+  
   denoised_DCA <- cbind(denoised_DCA_1, denoised_DCA_2, denoised_DCA_3, denoised_DCA_4, denoised_DCA_5, denoised_DCA_6)
   assign("denoised_DCA", denoised_DCA, .GlobalEnv)
-
+  
   #load(file = "latent_DCA.rda")
   data("latent_DCA", package = "scDrugPrio")
   assign("latent_DCA", latent_DCA, .GlobalEnv)
@@ -58,4 +58,6 @@ load_sample_data <- function(){
   #load(file = "fc_evaluation_done.rda")
   data("fc_evaluation_done", package = "scDrugPrio")
   assign("fc_evaluation_done", fc_evaluation_done, .GlobalEnv)
+  
+  rm(list = c(grep(ls(pos = .GlobalEnv), pattern = "denoised_DCA_", value = T)), pos = .GlobalEnv)
 }
