@@ -54,15 +54,15 @@ devtools::install_github("SDTC-CPMed/scDrugPrio")
 
 ## Input data
 
-scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536.
+scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536. Meta-data can be found on [figshare](https://figshare.com/s/d75d0136702ba324c1d2).
 
-scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^2]
+scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^2]. Meta-data can be found on [figshare](https://figshare.com/s/d75d0136702ba324c1d2).
 
-scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]
+scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data can be found on [figshare](https://figshare.com/s/d75d0136702ba324c1d2).
 
-scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending).
+scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending). Meta-data can be found on [figshare](https://figshare.com/s/d75d0136702ba324c1d2).
 
-Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases as well as meta-data for scRNA-seq files can be found in [data-raw](data-raw/) or on [figshare](https://figshare.com/s/d75d0136702ba324c1d2). For raw data sets we refer the reader to the original data sources.
+Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases can be found in [data-raw](data-raw/) and the supplementary files of the publication.
 
 ## Example workflow
 
