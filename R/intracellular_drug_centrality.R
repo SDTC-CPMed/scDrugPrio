@@ -15,7 +15,7 @@
 #' @export
 #'
 #'
-intracellular_drug_target_centrality <- function(ppin,
+intracellular_drug_centrality <- function(ppin,
                                                  drug_target_matrix,
                                                  degs,
                                                  file_name = "",
