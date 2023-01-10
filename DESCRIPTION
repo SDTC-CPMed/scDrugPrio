@@ -22,12 +22,15 @@ Imports:
   doParallel (>= 1.0.15),
   CINNA (>= 1.1.51),
   reshape2 (>= 1.4.4),
-  ggplot2 (>= 3.3.5), 
+  ggplot2 (>= 3.3.5),
   nichenetr (>= 1.0.0),
-  MAST (>= 1.19.0) 
+  MAST (>= 1.19.0),
+  limma,
+  ComplexHeatmap
 Suggests: 
     RCurl,
     GEOquery,
     KEGGREST,
     KEGGgraph,
     devtools
+Remotes: saeyslab/nichenetr
