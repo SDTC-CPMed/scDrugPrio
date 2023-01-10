@@ -58,9 +58,9 @@ scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthr
 
 scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^2]. Meta-data for the batch-corrected analysis can be found on figshare [10.6084/m9.figshare.21842193](https://figshare.com/s/eb05de865ae3e560eb55).
 
-scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data for the pooled, batch-corrected analysis can be found on figshare [10.6084/m9.figshare.21856728](https://figshare.com/s/27425b1fa697ecb81de7). Meta-data for the non-batch-corrected individual patient analyses can be found [here](........).
+scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data for the pooled, batch-corrected analysis can be found on figshare [10.6084/m9.figshare.21856728](https://figshare.com/s/27425b1fa697ecb81de7). Meta-data for the non-batch-corrected individual patient analyses can be found on [10.6084/m9.figshare.21856803](https://figshare.com/s/2c69f02a6ab089f0fe65).
 
-scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending). Meta-data can be found on [figshare](https://figshare.com/s/d75d0136702ba324c1d2).
+scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending). Meta-data for the batch-corrected anti-TNF data set can be found on [10.6084/m9.figshare.21856854](https://figshare.com/s/25e2acc2ca8e82249fd3) and the respective anti-IL17 dataset can be found on [10.6084/m9.figshare.21856866](https://figshare.com/s/a00e876ce91a8b066586).
 
 Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases can be found in [data-raw](data-raw/) and the supplementary files of the publication.
 
