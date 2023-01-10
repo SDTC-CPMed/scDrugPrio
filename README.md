@@ -37,9 +37,9 @@ While intracellular disease models, including the biopharmacological properties 
 
 ## R environment of scDrugPrio
 
-Analysis was conducted in R 3.6.3 if not otherwise stated. Apart from DEG calculation using the MAST package which requires R >= 3.5, this package is compatible with R >= 3.4.
+Analysis was conducted in R 3.6.3 if not otherwise stated. This package is compatible with R >= 3.6.
 
-Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igraph (>= 1.2.6), doParallel (>= 1.0.15), CINNA (>= 1.1.51), reshape2 (>= 1.4.4), ggplot2 (>= 3.3.5), nichenetr (>= 1.0.0), MAST (>= 1.19.0).
+Dependencies: dplyr (>= 1.0.7), Seurat (>= 3.1.0), R.filesets (>= 2.12.1), igraph (>= 1.2.6), doParallel (>= 1.0.15), CINNA (>= 1.1.51), reshape2 (>= 1.4.4), ggplot2 (>= 3.3.5), nichenetr (>= 1.0.0), MAST (>= 1.19.0), limma (>= 3.54.0) and ComplexHeatmap (>= 2.14.0).
 
 Suggested packages: RCurl, GEOquery, KEGGREST, KEGGgraph, devtools.
 
