@@ -58,7 +58,7 @@ scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthr
 
 scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^2]. Meta-data for the batch-corrected analysis can be found on figshare [10.6084/m9.figshare.21842193](https://figshare.com/s/eb05de865ae3e560eb55).
 
-scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data for the batchcan be found on [figshare](https://figshare.com/s/d75d0136702ba324c1d2).
+scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data for the pooled, batch-corrected analysis can be found on figshare [10.6084/m9.figshare.21856728](https://figshare.com/s/27425b1fa697ecb81de7). Meta-data for the non-batch-corrected individual patient analyses can be found [here](........).
 
 scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending). Meta-data can be found on [figshare](https://figshare.com/s/d75d0136702ba324c1d2).
 
