@@ -76,7 +76,7 @@ In order to better understand the interactions between DEGs and drug candidates,
 # Replication
 Deep Count Autoencoder (DCA)[^12] denoising was applied to each data set through calling the python application from the terminal. Raw expression data files can be found at the corresponding (GEO) repositories.
 
-Analysis of data sets can be replicated based on files provided in the supplementary files, large data files such as DCA adjusted expression files were uploaded to figshare. The uploaded R codes are accomponied by a readme file specifying the directory and data requirements for replication as well as where the data can be found.  If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from figshare and store it in the correct sub-directories:
+Analysis of data sets can be replicated based on files provided in the supplementary files, large data files such as DCA adjusted expression files were uploaded to figshare. The uploaded R codes are accomponied by a readme file specifying the directory and data requirements for replication as well as where the data can be found.  If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from figshare and store it in the correct sub-directories. Replication with standard codes will however result in long run times and require up to ca 300GB of RAM and access to up to 50 cores. These settings can be altered by the user in the codes if required.
 
 ```
 # AIA data
@@ -85,12 +85,18 @@ replication_of_analysis_AIA_data()
 # MS data
 source("inst/replication_of_analysis_MS_data.R")
 replication_of_analysis_MS_data()
-# CD data
+# Pooled batch-corrected CD data
 source("inst/replication_of_analysis_CD_data.R")
 replication_of_analysis_CD_data()
 # CD data for individual patients
 source("inst/replication_of_analysis_INDIVIDUAL_CD_data.R")
 replication_of_analysis_INDIVIDUAL_CD_data()
+# Anti-TNF PsA data
+source("inst/replication_of_analysis_anti_TNF_PsA.R")
+replication_of_analysis_anti_TNF_PsA()
+# Anti-IL17 PsA data
+source("inst/replication_of_analysis_anti_IL17_PsA.R")
+replication_of_analysis_anti_IL17_PsA()
 ```
 
 # References
