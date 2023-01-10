@@ -76,7 +76,8 @@ In order to better understand the interactions between DEGs and drug candidates,
 # Replication
 Deep Count Autoencoder (DCA)[^12] denoising was applied to each data set through calling the python application from the terminal. Raw expression data files can be found at the corresponding (GEO) repositories.
 
-Analysis of data sets can be replicated based on files provided in [data-raw](data-raw/) using the provided functions. Large data files such as DCA adjusted expression files were uploaded to [figshare](https://figshare.com/s/d75d0136702ba324c1d2). If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from [figshare](https://figshare.com/s/d75d0136702ba324c1d2) and store it in the correct sub-directories of [data-raw](data-raw/):
+Analysis of data sets can be replicated based on files provided in the supplementary files, large data files such as DCA adjusted expression files were uploaded to figshare. The uploaded R codes are accomponied by a readme file specifying the directory and data requirements for replication as well as where the data can be found.  If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from figshare and store it in the correct sub-directories:
+
 ```
 # AIA data
 source("inst/replication_of_analysis_AIA_data.R")
