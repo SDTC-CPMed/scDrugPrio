@@ -26,7 +26,9 @@ Imports:
   nichenetr (>= 1.0.0),
   MAST (>= 1.19.0),
   limma,
-  ComplexHeatmap
+  ComplexHeatmap,
+  FactoMineR,
+  emmeans
 Suggests: 
     RCurl,
     GEOquery,
