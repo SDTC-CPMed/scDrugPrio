@@ -7,6 +7,7 @@
 #' @param seed Seed used for randomization of drug targets and disease genes. Needs to be altered for every iteration.
 #'
 #' @return Returns a vector containing average closest distances between every set of random (bin-adjusted) disease genes and random (bin-adjusted) drug targets.
+#' @internal
 #'
 random_drug_target_bin_adjusted_distances <- function(bins, drug_target_matrix, disease_genes, ppin_dist, seed){
 

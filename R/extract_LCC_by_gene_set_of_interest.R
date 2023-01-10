@@ -33,6 +33,7 @@ extract_LCC_by_gene_set_of_interest <- function(network, gene_set_of_interest, p
       call. = FALSE
     )
   }
+  library(igraph)
   if(plot){
     if (!requireNamespace("qgraph", quietly = TRUE)) {
       stop(
@@ -40,6 +41,7 @@ extract_LCC_by_gene_set_of_interest <- function(network, gene_set_of_interest, p
         call. = FALSE
       )
     }
+    library(qgraph)
   }
 
   V(network)$gene_set_of_interest <- 0
@@ -48,7 +50,6 @@ extract_LCC_by_gene_set_of_interest <- function(network, gene_set_of_interest, p
   subGr <- induced_subgraph(network, vids= gsoi)
 
   if(plot){
-    library(qgraph)
     e <- get.edgelist(subGr)
     e[,1] <- match(e[,1], V(subGr)$name)
     e[,2] <- match(e[,2], V(subGr)$name)

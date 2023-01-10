@@ -16,13 +16,13 @@
 #'
 #'
 intracellular_drug_centrality <- function(ppin,
-                                                 drug_target_matrix,
-                                                 degs,
-                                                 file_name = "",
-                                                 cores = 1,
-                                                 centrality_alg = "eigenvector centralities",
-                                                 out_dir = "",
-                                                 seed = 35){
+                                          drug_target_matrix,
+                                          degs,
+                                          file_name = "",
+                                          cores = 1,
+                                          centrality_alg = "eigenvector centralities",
+                                          out_dir = "",
+                                          seed = 35){
 
   set.seed(seed)
 
@@ -182,7 +182,7 @@ intracellular_drug_centrality <- function(ppin,
     degs <- degs[,colSums(!is.na(degs)) > 2]
   }
 
-  LCCs <- foreach(i = c(1:ncol(degs)), .combine = "cbind") %dopar% {
+  LCCs <- foreach(i = c(1:ncol(degs)), .combine = "cbind", .packages = c("scDrugPrio", "igraph")) %dopar% {
 
     # extract LCC
     lcc_genes <- extract_LCC_by_gene_set_of_interest(network = ppi_graph, gene_set_of_interest = as.character(degs[!is.na(degs[,i]),i])) # only PPI proteins that are connected to other PPI proteins
@@ -232,7 +232,7 @@ intracellular_drug_centrality <- function(ppin,
   }
 
   # Find mean target centrality
-  mean_target_centrality <- foreach(i = c(1:ncol(LCCs)), .combine = "cbind") %dopar% { # for every cell type specific LCC
+  mean_target_centrality <- foreach(i = c(1:ncol(LCCs)), .combine = "cbind", .packages = c("igraph", "CINNA")) %dopar% { # for every cell type specific LCC
     if(sum(!is.na(LCCs[,i]))>1){
       # Calculate centrality for proteins in disease neighborhood of this cluster
       ###########################################################################

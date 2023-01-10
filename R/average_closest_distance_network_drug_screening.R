@@ -189,7 +189,7 @@ average_closest_distance_network_drug_screening <- function(ppin,
 
   print("RUNNING bin-adjusted reference distribution for average closest distances between random drug targets and random disease genes")
   # random_bin_drugs (1 column for every drug, 1 row for every n_random_iteration)
-  random_bin_drugs <- foreach(i = c(1:n_random_iterations), .combine = rbind) %dopar% {
+  random_bin_drugs <- foreach(i = c(1:n_random_iterations), .combine = rbind, .packages = "scDrugPrio") %dopar% {
     # returns vector with n_random_iterations elements cotaining closest distances between disease and
     # (bin-adjusted) random drug tragets for a given drug
     random_drug_target_bin_adjusted_distances(bins, drug_target_matrix, disease_genes, ppin_dist, seed = i)
@@ -200,7 +200,7 @@ average_closest_distance_network_drug_screening <- function(ppin,
   # Calculation of average closest distances between
   print("RUNNING average closest distances between actual drug targets and actual disease genes")
   n_targets <- colSums(!is.na(drug_target_matrix))
-  out <- foreach(i = 1:ncol(drug_target_matrix), .combine = rbind) %dopar% {
+  out <- foreach(i = 1:ncol(drug_target_matrix), .combine = rbind, .packages = "scDrugPrio") %dopar% {
     temp <- rep(NA, times = 6)
     # n targets
     temp[1] <- n_targets[i]
