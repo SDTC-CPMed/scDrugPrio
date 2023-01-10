@@ -6,7 +6,7 @@
 #' @param target Vector with the same length as drugID that shall be sorted into different rows based on drugID. 
 #' 
 #' @return Matrix with length(unique(drugID)) columns. Each column specifies all targets for a certain drug. Column names specify which drugID the targets correspond to.
-#' 
+#' @export
 #' 
 create_drug_target_matrix <- function(drugID, target){
   library(doParallel)
