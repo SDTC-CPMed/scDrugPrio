@@ -39,6 +39,7 @@ load_sample_data <- function(){
   data("denoised_DCA_6", package = "scDrugPrio")
   
   denoised_DCA <- cbind(denoised_DCA_1, denoised_DCA_2, denoised_DCA_3, denoised_DCA_4, denoised_DCA_5, denoised_DCA_6)
+  mode(denoised_DCA) <- "numeric"
   assign("denoised_DCA", denoised_DCA, .GlobalEnv)
   
   #load(file = "latent_DCA.rda")
