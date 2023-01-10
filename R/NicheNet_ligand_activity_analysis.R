@@ -79,7 +79,8 @@ NicheNet_ligand_activity_analysis <- function(degs,
 
   # Loop through all possible cell type - cell type combinations
   ######################################################################
-  all_ligand_activity <- foreach(i = c(1:ncol(degs)), .combine = "rbind") %dopar% {
+  
+  all_ligand_activity <- foreach(i = c(1:ncol(degs)), .combine = "rbind", .packages = c("nichenetr", "doParallel")) %dopar% {
 
     # sender DEGs
     sender_degs <- degs[!is.na(degs[,i]),i]
@@ -87,9 +88,8 @@ NicheNet_ligand_activity_analysis <- function(degs,
     sender_degs <- sender_degs[!is.na(sender_degs)]
 
     if(length(sender_degs)>0){
-      out <- foreach(j = c(1:ncol(background_genes)), .combine = "rbind") %do% {
-
-        #print(paste("i:", i, "j:", j, sep=" "))
+      
+      out <- foreach(j = c(1:ncol(background_genes)), .combine = "rbind", .packages = "nichenetr") %do% {
 
         # background genes
         target_background <- background_genes[!is.na(background_genes[,j]),j]
@@ -125,17 +125,14 @@ NicheNet_ligand_activity_analysis <- function(degs,
         rm(ligand_activity)
         return(temp)
       }
+      
     } else {
       out <- matrix(NA, nrow = 1, ncol = 6)
       colnames(out) <- c("test_ligand", "auroc", "aupr", "pearson", "", "")
     }
-
-    print(i)
-    print(dim(out))
-    print(colnames(out))
-
     return(out)
   }
+  
   all_ligand_activity <- all_ligand_activity[!is.na(all_ligand_activity[,1]),]
   colnames(all_ligand_activity)[(ncol(all_ligand_activity)-1):ncol(all_ligand_activity)] <- c("Sender", "Target")
   if(only_pos){
