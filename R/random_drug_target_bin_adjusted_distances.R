@@ -12,10 +12,9 @@
 random_drug_target_bin_adjusted_distances <- function(bins, drug_target_matrix, disease_genes, ppin_dist, seed){
 
   set.seed(seed)
-  library(doParallel)
-
+  
   # which_bins_drugs -> columns = drugs, bins = rows
-  which_bins_drugs <- foreach(k = c(1:ncol(drug_target_matrix)), .combine = cbind) %dopar% {
+  which_bins_drugs <- foreach(k = c(1:ncol(drug_target_matrix)), .combine = cbind, .packages = "doParallel") %dopar% {
     # bins for drugs
     temp <- drug_target_matrix[,k]
     temp <- temp[!is.na(temp)]
