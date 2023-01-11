@@ -388,7 +388,7 @@ denoised_DCA_clustered <- RunTSNE(denoised_DCA_clustered, dims = 1:32)
 TSNEPlot(denoised_DCA_clustered)
 ```
 <p align="center">
-  <img src="tSNE_clusters_example.png" width="600" title="hover text">
+  <img src="tSNE_clusters_example.png" width="600">
 </p>
 
 Above code results in clustering of the scRNA-seq data. In
@@ -486,7 +486,7 @@ heatmap <- ggplot(out, aes(x=Var2, y=Var1, fill=value)) +
 plot(heatmap)
 ```
 <p align="center">
-  <img src="cell_type_markers_example.png" width="600" title="hover text">
+  <img src="cell_type_markers_example.png" width="600">
 </p>
 
 Based on the above heatmap, Cluster 1 and 0 seem to be B cells. Cluster
@@ -769,8 +769,6 @@ drugs in the full intercellular disease network we derive the mean
 intracellular centrality as the artihemtric mean of all cell type’s
 individual intracellular centralities.
 
-### Intracellular centrality
-
 ``` r
 # make sure ppin and degs have the same gene annotation system so they can be matched
 for(i in 1:ncol(degs.clusters.h.vs.s)){
@@ -802,7 +800,7 @@ print(head(intra_cent))
 #> DB00054 0.004591326 0.0000000                   0.002295663
 ```
 
-### Network distance calculation
+## Network distance calculation
 
 Lets determine the average closest network proximity between drug targets and DEGs in the human PPIN. The example data was designed so that the below calculation can be run on any modern desktop. Note however that the network proximity calculation will require a few Gb of RAM per core on which it is run and might take approximately 20mins if allocated 25 cores or several hours if allocated only 1 core.
 
@@ -844,9 +842,9 @@ print(head(data))
 #> 6 3.681568e-07
 ```
 
-### Gather information on pharmacological actions and on targeted DEGs fold change
+### Evaluate pharmacological actions on targeted DEGs fold change
 
-
+Next, we want to summarize the drug effects on targeted DEGs in order to evaluate the biopharmacological potential of drugs. As explained in greater depth in our manuscript, the simple reasoning is that a drug should counteract disease related expression changes in order to be effective. To evaluate this, we will need a table in which the drug targets, drug effects and the targeted DEGs fold change (for each cluster) is specified.   
 
 ``` r
 # lets translate the raw drug bank matrix back to human symbols in order to make the interpretation a little bit easier
@@ -885,16 +883,19 @@ fc_evaluation <- pharma_effect_on_fold_change(drug_dist_files = drug_dists, deg_
 ```
 
 The above produces a matrix (`fc_evaluation`) that describes the effects
-of all drugs on DEGs. In column 10, the fold change of directly targeted
+of all drugs on DEGs. In column 10 (column K when opened in excel), the fold change of directly targeted
 DEGs (if any) is noted. In case a drug did not target any DEG, this
 column will specify `()`.
 
-### Summary of network distance calculations
+<p align="center">
+  <img src="FC_summary_raw.png" width="600">
+</p>
 
-For the next step we need a summary of the above calculated network
-distances. The summary will only include drugs that pass our selection
-criteria of zc \< -1.64 and dc \< 1. The summary shall then be used to
-evaluate whether the drugs also pass the third selection criterion,
+### Drug candidate selection based on network distance calculations
+
+Next, we can refine the above list by including only drugs that pass our network proximity-based selection
+criteria of zc \< -1.64 and dc \< 1. The list shall then be used to
+manually evaluate whether the drugs also pass the third selection criterion,
 namely that at least on DEG is counteracted by a drug target.
 
 ``` r
@@ -904,49 +905,13 @@ fc_evaluation <- fc_evaluation[as.numeric(fc_evaluation[,7]) < 0.05,]
 fc_evaluation <- fc_evaluation[order(fc_evaluation[,1]),]
 fc_evaluation <- cbind(Drug_name = drug_bank_example_data[match(fc_evaluation[,1], drug_bank_example_data[,1]),2], fc_evaluation)
 write.table(fc_evaluation, file = "Sample_output/FC_criteria_checking/SUMMARY_only_drugs_passing_network_criteria.txt", sep="\t", col.names = T, row.names = F)
-head(fc_evaluation)
-#>      Drug_name               Drug      n_drug_targets dc          zc           
-#> [1,] "Cetuximab"             "DB00002" "10"           "0.3000000" "-5.0893908" 
-#> [2,] "Etanercept"            "DB00005" "11"           "0.1818182" "-6.4925900" 
-#> [3,] "Etanercept"            "DB00005" "11"           "0.9090909" "-4.97040188"
-#> [4,] "Peginterferon alfa-2a" "DB00008" " 2"           "0.0000000" "-3.7565841" 
-#> [5,] "Alteplase"             "DB00009" " 2"           "0.5000000" "-1.8944855" 
-#> [6,] "Alteplase"             "DB00009" " 2"           "0.5000000" "-2.89207475"
-#>      mean.random.dc. SD.random.dc. P              n_targets n_targeted_degs
-#> [1,] "1.0079000"     "0.13909327"  "1.796078e-07" "10"      "7"            
-#> [2,] "1.0056364"     "0.12688591"  "4.218655e-11" "11"      "9"            
-#> [3,] "1.663727"      "0.1518260"   "3.340713e-07" "11"      "3"            
-#> [4,] "0.9225000"     "0.24556884"  "8.612419e-05" " 2"      "2"            
-#> [5,] "0.9200000"     "0.22169607"  "2.908030e-02" " 2"      "1"            
-#> [6,] "1.460500"      "0.3321145"   "1.913534e-03" " 2"      "1"            
-#>      targeted_degs                                                                                                                   
-#> [1,] "C1QA (down), C1QB (down), C1QC (down), FCGR3A (down), FCGR1A (down), FCGR2A (down), FCGR2B (down)"                             
-#> [2,] "TNF (down), TNFRSF1B (down), FCGR1A (down), FCGR3A (down), FCGR2A (down), FCGR2B (down), C1QA (down), C1QB (down), C1QC (down)"
-#> [3,] "TNFRSF1B (down), C1QB (down), C1QC (down)"                                                                                     
-#> [4,] "IFNAR2 (down), IFNAR1 (down)"                                                                                                  
-#> [5,] "PLAUR (down)"                                                                                                                  
-#> [6,] "PLAUR (down)"                                                                                                                  
-#>      pharmacological_effect                                                                                                                  
-#> [1,] "EGFR (antagonist), C1R (NA), C1QA (NA), C1QB (NA), C1QC (NA), FCGR3A (NA), C1S (NA), FCGR1A (NA), FCGR2A (NA), FCGR2B (NA)"            
-#> [2,] "TNF (antibody), TNFRSF1B (NA), FCGR1A (NA), FCGR3A (NA), FCGR2A (NA), FCGR2B (NA), C1S (NA), C1R (NA), C1QA (NA), C1QB (NA), C1QC (NA)"
-#> [3,] "TNF (antibody), TNFRSF1B (NA), FCGR1A (NA), FCGR3A (NA), FCGR2A (NA), FCGR2B (NA), C1S (NA), C1R (NA), C1QA (NA), C1QB (NA), C1QC (NA)"
-#> [4,] "IFNAR2 (agonist), IFNAR1 (agonist)"                                                                                                    
-#> [5,] "PLAUR (NA), SERPINE1 (NA)"                                                                                                             
-#> [6,] "PLAUR (NA), SERPINE1 (NA)"                                                                                                             
-#>                 
-#> [1,] "Cluster_0"
-#> [2,] "Cluster_0"
-#> [3,] "Cluster_1"
-#> [4,] "Cluster_0"
-#> [5,] "Cluster_0"
-#> [6,] "Cluster_1"
 ```
 
 ### Evaluation of drug candidates effect on targeted DEGs
 
 This is a manual step due incomplete, inconsistent and sometimes unclear
-description of therapeutic effect in DrugBank. In this step we evaluate
-for every directly targeted DEG whether it’s fold change is counteracted
+description of therapeutic effect in the free version of DrugBank. In this step we evaluate,
+for every directly targeted DEG, whether it’s fold change is counteracted
 by the drug or rather mimicked. This binary description of effect is
 needed for further drug candidate selection, where we find that drugs
 that counteracted at least one DEG were more likely to be drugs approved
@@ -974,7 +939,9 @@ effect was on this DEG.
 
 Example:
 
-*INSERT SCREENSHOT OF EXCEL FILE*
+<p align="center">
+  <img src="FC_summary_manual_eval.png" width="800">
+</p>
 
 Given that we have the total number of drug targets and the number of
 directly targeted DEGs, we can use Excel formulas to calculate the value
