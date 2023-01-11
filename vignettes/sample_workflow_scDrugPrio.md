@@ -388,7 +388,7 @@ denoised_DCA_clustered <- RunTSNE(denoised_DCA_clustered, dims = 1:32)
 TSNEPlot(denoised_DCA_clustered)
 ```
 <p align="center">
-  <img src="tSNE_clusters_example.png" width="800" title="hover text">
+  <img src="tSNE_clusters_example.png" width="600" title="hover text">
 </p>
 
 Above code results in clustering of the scRNA-seq data. In
@@ -486,7 +486,7 @@ heatmap <- ggplot(out, aes(x=Var2, y=Var1, fill=value)) +
 plot(heatmap)
 ```
 <p align="center">
-  <img src="cell_type_markers_example.png" width="800" title="hover text">
+  <img src="cell_type_markers_example.png" width="600" title="hover text">
 </p>
 
 Based on the above heatmap, Cluster 1 and 0 seem to be B cells. Cluster
