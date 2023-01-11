@@ -981,9 +981,11 @@ reference. Furthermore, we then updated the drug effect column R
 
 ## Final drug candidate selection and ranking
 
-Lets assume we have completed evaluation of drug effects direction in
-respect to targeted DEGs fold change, we will derive a file that
-resembles `fc_evaluation_done`
+Lets assume we have completed evaluation of drug candidates effect on targeted
+DEGs. We will derive a file that resembles the above Excel file. This file can be loaded 
+into R and, continuing our example, we have named this variable `fc_evaluation_done`.
+
+Next we need to rank all drug candidates using inter- and intracellular centrality.
 
 ``` r
 dir.create("Sample_output/Final_ranking")
