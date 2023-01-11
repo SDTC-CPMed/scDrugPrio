@@ -7,7 +7,7 @@
 #' @param pos_DrugID Integer specifying the column in which the cluster IDs / cell type labels can be found that are to be matched with names in inter_cent.  
 #' @param keep Vector specifying which columns (as indicated by column number) to keep in the final drug ranking file. 
 #' @param inter_cent Vector specifying the centrality score of each cluster. The name of each element indicates which cluster/cell type the centrality score belongs to. Names must be matchable with cluster identifiers in 'fc_evaluation'.  
-#' @param intra_cent Vector specifying the cluster-wide average of the intracellular centralities. Names indicate which drug the centrality score belongs to. Names must be matchable with column 1 in 'fc_evaluation'.
+#' @param intra_cent Vector specifying the cluster-wide average of the intracellular centralities. Names indicate which drug the centrality score belongs to. Names must be matchable with the column specified by `pos_DrugID` in 'fc_evaluation'.
 #' @param file_name Character string specyfing the file name by which the final ranking will be saved.
 #' @param out_dir Character string specifying path to out directory where the final ranking will be saved.
 #'
