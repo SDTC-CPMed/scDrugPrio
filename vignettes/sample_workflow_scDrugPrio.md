@@ -98,7 +98,6 @@ need to create a output directory.
 
 ``` r
 dir.create("Sample_output")
-#> Warning in dir.create("Sample_output"): 'Sample_output' already exists
 setwd("Sample_output")
 ```
 
@@ -116,14 +115,16 @@ head(drug_bank_example_data)
 #> [3,] "DB00002" "Cetuximab" "approved" "O75015"       
 #> [4,] "DB00002" "Cetuximab" "approved" "P00736"       
 #> [5,] "DB00002" "Cetuximab" "approved" "P02745"       
-#> [6,] "DB00002" "Cetuximab" "approved" "P02746"       
+#> [6,] "DB00002" "Cetuximab" "approved" "P02746" 
+#>
 #>      target_name                                                  gene_symbol
 #> [1,] "Prothrombin"                                                "F2"       
 #> [2,] "Epidermal growth factor receptor"                           "EGFR"     
 #> [3,] "Low affinity immunoglobulin gamma Fc region receptor III-B" "FCGR3B"   
 #> [4,] "Complement C1r subcomponent"                                "C1R"      
 #> [5,] "Complement C1q subcomponent subunit A"                      "C1QA"     
-#> [6,] "Complement C1q subcomponent subunit B"                      "C1QB"     
+#> [6,] "Complement C1q subcomponent subunit B"                      "C1QB"  
+#>
 #>      target_organism drug_action
 #> [1,] "inhibitor"     "Humans"   
 #> [2,] "antagonist"    "Humans"   
@@ -135,16 +136,16 @@ head(drug_bank_example_data)
 
 This data has to be filtered for our predictions. Specifically, we
 wanted to restrict predictions to drugs that are indicated for use on
-‘Humans’, are (or have been) FDA approved and have at least one known
+"Humans", are (or have been) FDA approved and have at least one known
 human drug target.
 
 ``` r
 # Include only drugs for 'Humans'
-drug_bank_example_data <- drug_bank_example_data[grepl(pattern = "Humans", x = drug_bank_example_data[,8]),] # human
+drug_bank_example_data <- drug_bank_example_data[grepl(pattern = "Humans", x = drug_bank_example_data[,8]),]
 # Include only 'approved' drugs
-drug_bank_example_data <- drug_bank_example_data[grepl(pattern = "approved", x = drug_bank_example_data[,3]),] # approved
+drug_bank_example_data <- drug_bank_example_data[grepl(pattern = "approved", x = drug_bank_example_data[,3]),]
 # Include only drugs with at least one known drug target
-drug_bank_example_data <- drug_bank_example_data[!is.na(drug_bank_example_data[,6]),] # valid drug target
+drug_bank_example_data <- drug_bank_example_data[!is.na(drug_bank_example_data[,6]),]
 
 # number of unique drugs after filtering
 length(unique(drug_bank_example_data[,1]))
@@ -172,10 +173,11 @@ head(translation_mouse_human)
 drug_bank_example_data[,6] <- translation_mouse_human[match(drug_bank_example_data[,6], translation_mouse_human[,1]),2]
 drug_bank_example_data <- drug_bank_example_data[!is.na(drug_bank_example_data[,6]),]
 ```
+Now that we have translated drug gene targets to Entrez IDs, we will 
+summarize drug targets for all drugs in a matrix. Every column includes the
+drug targets of one drug.
 
 ``` r
-# Summarize drug targets for all drugs, translates them to Entrez Gene IDs and saves matrix in 'data/'
-# Every column includes the drug targets of one drug.
 drug_target_matrix <- create_drug_target_matrix(drugID = drug_bank_example_data[,1], target = as.numeric(drug_bank_example_data[,6]))
 #> Loading required package: foreach
 #> Loading required package: iterators
@@ -258,7 +260,7 @@ shape for network distance calculation yet. It still includes drug
 targets that are not found in the PPIN as well as 569 duplicated drug
 target entries. To speed up computations and decrease file size we will
 apply the
-function`prepare_drug_target_matrix_for_network_distance_calculation()`
+function `prepare_drug_target_matrix_for_network_distance_calculation()`
 that will exclude all drug targets not found in the PPIN as well as
 excludes duplicated sets of drug targets. Only unique drug target
 combinations will remain. As we after network distance calculations plan
@@ -334,8 +336,8 @@ environment already.
 
 Using Seurat 3.1.0, we cluster the data based on DCA-derived latent
 features for optimal cell typing. A detailed vignette on clustering
-using Seurat can be found [here](https://github.com/satijalab/seurat).
-In the code below `denoised_DCA` represent the DCA derived `mean.tsv`
+using Seurat can be found on the original authors [GitHub page](https://github.com/satijalab/seurat).
+In the code below the variable `denoised_DCA` represent the DCA derived `mean.tsv`
 data and `latent_DCA` represent the DCA derived `latent.tsv` file. Both
 `denoised_DCA` and `latent_DCA` are sample data that were created by
 randomly subsampling the originally used data. In the single cell
@@ -357,10 +359,7 @@ denoised_DCA_clustered <- CreateSeuratObject(counts = denoised_DCA, project = "D
 
 # Dimensional reduction using DCA derived latent features instead of linear principal components
 latent_DCA <- latent_DCA[,match(colnames(denoised_DCA), colnames(latent_DCA))]
-pca <- new("DimReduc", 
-           cell.embeddings = t(latent_DCA), 
-           assay.used = "RNA", 
-           key = "PC_")
+pca <- new("DimReduc", cell.embeddings = t(latent_DCA), assay.used = "RNA", key = "PC_")
 
 denoised_DCA_clustered@reductions$pca <- pca
 
@@ -372,6 +371,7 @@ denoised_DCA_clustered <- FindNeighbors(object = denoised_DCA_clustered,
                                         nn.method="rann") # shared nearest neighbor graph + Jaccard index
 #> Computing nearest neighbor graph
 #> Computing SNN
+
 denoised_DCA_clustered <- FindClusters(denoised_DCA_clustered, resolution = 0.25) # Louvain algorithm
 #> Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 #> 
@@ -387,12 +387,11 @@ denoised_DCA_clustered <- FindClusters(denoised_DCA_clustered, resolution = 0.25
 denoised_DCA_clustered <- RunTSNE(denoised_DCA_clustered, dims = 1:32)
 TSNEPlot(denoised_DCA_clustered)
 ```
-
-![](sample_workflow_scDrugPrio_files/figure-markdown_github/unnamed-chunk-14-1.png)
+<br><br> <img src="vignettes/tSNE_clusters_example.png" width="800" /> <br><br>
 
 Above code results in clustering of the scRNA-seq data. In
-`CreateSeuratObject()` we can set min.cells = 1 and min.features = 1, as
-we previously filtered the raw scRNA-seq expression matrix and applied
+`CreateSeuratObject()` we can set `min.cells = 1` and `min.features = 1`, as
+we in this example data set include scRNA-seq data that had already undergone application of
 quality criteria. Application of the `FindNeighbors()`and
 `FindClusters()`function with standard parameters will result in Seurat
 constructing a shared nearest-neighbour graph followed by application of
@@ -404,11 +403,8 @@ identified clusters. The value of the resolution parameter will depend
 on the size of the data set (number of cells). Arbitrary optimization of
 `k` and `resolution` will be required for new data sets in order to
 identify biologically valuable clusters, though there have been recent
-suggestions by
-[satijalab](https://satijalab.org/seurat/articles/get_started.html) on a
-more systematic optimization process in which data is initially
-overclustered and nodes og the cluster tree are merged until the ideal
-threshold is reached.
+suggestions by e.g. [Chen et al.] (https://doi.org/10.1093/gigascience/giz121)
+that more systematicly aim to optimize PCs and resolution paramaters.
 
 Having now clustered the data we will need to save cluster outcomes.
 
@@ -488,7 +484,7 @@ heatmap <- ggplot(out, aes(x=Var2, y=Var1, fill=value)) +
 plot(heatmap)
 ```
 
-![](sample_workflow_scDrugPrio_files/figure-markdown_github/unnamed-chunk-16-1.png)
+<br><br> <img src="vignettes/cell_type_markers_example.png" width="800" /> <br><br>
 
 Based on the above heatmap, Cluster 1 and 0 seem to be B cells. Cluster
 4 seems to be T cells. Cluster 2 expresses myeloid markers and Cluster 3
@@ -567,16 +563,14 @@ calculate_DEGs(temp_id_unique, outdir = "Sample_output", seurat_obj = denoised_D
 
 # Example output (plasma B cell DEGs):
 head(read.table(file = "Sample_output/Cluster_1.txt", sep="\t", header = T, stringsAsFactors = F))
+#>        X        p_val avg_log2FC pct.1 pct.2    p_val_adj
+#> 1   Irf7 5.363586e-13 -0.7833968     1     1 1.303137e-08
+#> 2 Ifitm3 4.901806e-12 -0.8896550     1     1 1.190943e-07
+#> 3 Lgals3 2.173980e-11 -0.7913253     1     1 5.281901e-07
+#> 4   Klf2 6.459201e-11 -0.6838869     1     1 1.569328e-06
+#> 5 Fcer1g 8.610914e-11 -0.7105255     1     1 2.092108e-06
+#> 6   Spp1 1.531374e-10 -0.6651808     1     1 3.720626e-06
 ```
-
-    #>        X        p_val avg_log2FC pct.1 pct.2    p_val_adj
-    #> 1   Irf7 5.363586e-13 -0.7833968     1     1 1.303137e-08
-    #> 2 Ifitm3 4.901806e-12 -0.8896550     1     1 1.190943e-07
-    #> 3 Lgals3 2.173980e-11 -0.7913253     1     1 5.281901e-07
-    #> 4   Klf2 6.459201e-11 -0.6838869     1     1 1.569328e-06
-    #> 5 Fcer1g 8.610914e-11 -0.7105255     1     1 2.092108e-06
-    #> 6   Spp1 1.531374e-10 -0.6651808     1     1 3.720626e-06
-
 Next we will make a summary of all clusters DEGs for easy access by
 future functions.
 
@@ -598,7 +592,7 @@ for(i in 1:ncol(degs.clusters.h.vs.s)){
 }
 colnames(degs.clusters.h.vs.s) <- unlist(strsplit(files, split = ".txt"))
 
-# remove empty rows and columns
+# remove empty rows
 degs.clusters.h.vs.s <- degs.clusters.h.vs.s[rowSums(!is.na(degs.clusters.h.vs.s))>0,]
 head(degs.clusters.h.vs.s)
 #>      Cluster_0  Cluster_1 Cluster_2 Cluster_3 Cluster_4
@@ -609,7 +603,6 @@ head(degs.clusters.h.vs.s)
 #> [5,] "mt-Nd2"   "Fcer1g"  NA        NA        NA       
 #> [6,] "Mir6236"  "Spp1"    NA        NA        NA
 
-# save
 write.table(degs.clusters.h.vs.s, file = paste(outdir, "/SUMMARY_sig_adj_MAST_DEGs_log(1.5)_all_clusters.txt", sep=""),sep="\t", col.names = T, row.names = F)
 ```
 
@@ -808,9 +801,9 @@ print(head(intra_cent))
 
 ### Network distance calculation
 
-#save(ppin, drug_target_matrix, degs.clusters.h.vs.s, file =
-“before_drug_prediction_save.RData”)
-#load(“before_drug_prediction_save.RData”)
+Lets determine the average closest network proximity between drug targets and DEGs in the human PPIN. The example data was designed so that the below calculation can be run on any modern desktop. Note however that the network proximity calculation will require a few Gb of RAM per core on which it is run and might take approximately 20mins if allocated 25 cores or several hours if allocated only 1 core.
+
+For real-world scRNA-seq data sets, we advice the user to run network proximity calculations on dedicated computational clusters or high performance computers.
 
 ``` r
 dir.create("Sample_output/network_distances")
@@ -827,7 +820,7 @@ for(i in 1:ncol(degs.clusters.h.vs.s)){ # For every cell types DEGs
 }
 ```
 
-This above code creates one file for every iteration. Let’s have a look:
+This above code creates one file for every iteration (one iteration for every set of DEGs). Let’s have a look on one of them:
 
 ``` r
 data <- read.table(file = paste("Sample_output/network_distances/drug-disease_closest_distances_vs_random_bin_adjusted__Cluster_0.txt", sep=""), sep ="\t", header = T, stringsAsFactors = F)
@@ -850,31 +843,11 @@ print(head(data))
 
 ### Gather information on pharmacological actions and on targeted DEGs fold change
 
+
+
 ``` r
 # lets translate the raw drug bank matrix back to human symbols in order to make the interpretation a little bit easier
 drug_bank_example_data[,6] <- translation_mouse_human[match(drug_bank_example_data[,6], translation_mouse_human[,2]),1]
-head(drug_bank_example_data)
-#>      drugID    drug_name   status     Swiss_target_ID
-#> [1,] "DB00001" "Lepirudin" "approved" "P00734"       
-#> [2,] "DB00002" "Cetuximab" "approved" "P00533"       
-#> [3,] "DB00002" "Cetuximab" "approved" "P00736"       
-#> [4,] "DB00002" "Cetuximab" "approved" "P02745"       
-#> [5,] "DB00002" "Cetuximab" "approved" "P02746"       
-#> [6,] "DB00002" "Cetuximab" "approved" "P02747"       
-#>      target_name                             gene_symbol target_organism
-#> [1,] "Prothrombin"                           "F2"        "inhibitor"    
-#> [2,] "Epidermal growth factor receptor"      "EGFR"      "antagonist"   
-#> [3,] "Complement C1r subcomponent"           "C1R"       NA             
-#> [4,] "Complement C1q subcomponent subunit A" "C1QA"      NA             
-#> [5,] "Complement C1q subcomponent subunit B" "C1QB"      NA             
-#> [6,] "Complement C1q subcomponent subunit C" "C1QC"      NA             
-#>      drug_action
-#> [1,] "Humans"   
-#> [2,] "Humans"   
-#> [3,] "Humans"   
-#> [4,] "Humans"   
-#> [5,] "Humans"   
-#> [6,] "Humans"
 
 # translate DEG files
 lf <- list.files(path = "Sample_output", pattern = "Cluster_")
