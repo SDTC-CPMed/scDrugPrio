@@ -387,7 +387,7 @@ denoised_DCA_clustered <- FindClusters(denoised_DCA_clustered, resolution = 0.25
 denoised_DCA_clustered <- RunTSNE(denoised_DCA_clustered, dims = 1:32)
 TSNEPlot(denoised_DCA_clustered)
 ```
-<br><br> <img src="vignettes/tSNE_clusters_example.png" width="800" /> <br><br>
+(tSNE_clusters_example.png)
 
 Above code results in clustering of the scRNA-seq data. In
 `CreateSeuratObject()` we can set `min.cells = 1` and `min.features = 1`, as
