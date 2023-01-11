@@ -842,6 +842,24 @@ print(head(data))
 #> 6 3.681568e-07
 ```
 
+To save computational time, drugs with identical drug targets enter the
+above network proximity calculation only once, given that they should
+have identical network distances. However, they might have different
+biopharmacological actions, and therefore, we will have to separate
+drugs again by running the following code.
+
+``` r
+lf  <- list.files(path = "Sample_output/network_distances/", pattern = "drug-disease_closest_distances_vs_random_bin_adjusted__")
+separate_unique_drug_target_combinations_into_individual_drugs(files = lf, 
+                                                               remove_part_of_file_name_for_output = "drug-disease_closest_distances_vs_random_bin_adjusted__",
+                                                               same_drugs = same_drugs, 
+                                                               disease_specific_drugs = RA_drugs, 
+                                                               output_file_name_add_on = "INDIVIDUAL_DRUGS_", 
+                                                               in_dir = "Sample_output/network_distances/", 
+                                                               out_dir = "Sample_output/network_distances/")
+
+#> [1] "Drug target combinations successfully separated into individual drugs"
+```
 ### Evaluate pharmacological actions on targeted DEGs fold change
 
 Next, we want to summarize the drug effects on targeted DEGs in order to evaluate the biopharmacological potential of drugs. As explained in greater depth in our manuscript, the simple reasoning is that a drug should counteract disease related expression changes in order to be effective. To evaluate this, we will need a table in which the drug targets, drug effects and the targeted DEGs fold change (for each cluster) is specified.   
@@ -888,7 +906,7 @@ DEGs (if any) is noted. In case a drug did not target any DEG, this
 column will specify `()`.
 
 <p align="center">
-  <img src="FC_summary_raw.png" width="600">
+  <img src="FC_summary_raw.png" width="1000">
 </p>
 
 ### Drug candidate selection based on network distance calculations
@@ -918,58 +936,44 @@ that counteracted at least one DEG were more likely to be drugs approved
 for the disease (and therefore more likely to have a disease-modyfing
 effect).
 
-To record whether the drug counteracted a DEG or not we used the columns
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’,
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’, and
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’.
-Additionally, we created columns
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ and
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ in an
+For manual evaluation, we opened the file created in the step above by
+‘combine_evaluation_files()’ in Excel. To record whether the drug counteracted a DEG or not we added column L
+‘n_drug_targets_counteracting_disease’, and column M
+‘n_drug_targets_mimmicking_disease’. Additionally, we created column N
+‘Counteracting_%’, column O 
+‘Mimmicking_%’ and column P ‘Outside_model_%’ in an
 attempt of using the percentages of targeted DEGs as a drug candidate
 selection parameter, though it later showed to have no added value over
-the column
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’.
+column L ‘n_drug_targets_counteracting_disease’.
 
-For manual evaluation, we opened the file created in the step above by
-‘combine_evaluation_files()’ in Excel. For the column
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ the
+For column L ‘n_drug_targets_counteracting_disease’ the
 value had to be determined manually. This meant checking what the
 direction of the fold change (FC) was for a given DEG and what the drug
-effect was on this DEG.
+effect was on this DEG. The number of counteracted DEGs was recorded in this column.
+
+Given that we have the total number of drug targets and the number of
+directly targeted DEGs, we can use Excel formulas to calculate the value
+for column M - P. For this the following formulas can be used (here specified for row 2):
+column M2 ‘n_drug_targets_mimmicking_disease’ = K2-L2
+column N2 ‘Counteracting_%’ = K2*100/J2
+column O2 ‘Mimmicking_%’ = M2*100/J2
+column P2 ‘Outside_model_%’ = (J2-K2)*100/J2
 
 Example:
 
 <p align="center">
-  <img src="FC_summary_manual_eval.png" width="800">
+  <img src="FC_summary_manual_eval.png" width="1000">
 </p>
 
-Given that we have the total number of drug targets and the number of
-directly targeted DEGs, we can use Excel formulas to calculate the value
-for column
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’,
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’,
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ and
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ given
-the value in
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’. For
-this the following formulas can be used:
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ =
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ =
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ =
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ =
-
-This manual step might at times even require literature research, as the
-drug effect might not be clearly described. While it is up to the user,
+This manual step might at times require literature research, as the
+drug effect might not be clearly described in DrugBank. While it is up to the user,
 we recommend the literature-gained insights are recorded in a
-standardized matter. For this, we created the
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ in
+standardized matter. For this, we created the column T
+‘Additional_information_targets’ in
 which we stored a short description of 1) which drug target literature
 was searched for, 2) the result of the search and 3) the PMID for the
-reference. Furthermore, we then updated the drug effect column
-‘XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX’ to include this
-new gained knowledge.
-
-*INSERT SCREENSHOT OF EXCEL FILE*
+reference. Furthermore, we then updated the drug effect column R
+‘pharmacological_effect’ to include this new gained knowledge.
 
 ## Final drug candidate selection and ranking
 
@@ -979,8 +983,6 @@ resembles `fc_evaluation_done`
 
 ``` r
 dir.create("Sample_output/Final_ranking")
-#> Warning in dir.create("Sample_output/Final_ranking"):
-#> 'Sample_output/Final_ranking' already exists
 drug_rank <- final_drug_prioritization(fc_evaluation = fc_evaluation_done, 
                                        pos_DrugID = 2,
                                        pos_clusterID = 19, 
@@ -997,6 +999,7 @@ head(drug_rank[,-c(5:7)])
 #> DB00031 "Tenecteplase"                            "DB00031" 
 #> DB00009 "Alteplase"                               "DB00009" 
 #> DB00045 "Lyme disease vaccine (recombinant OspA)" "DB00045" 
+#>
 #>         known_disease_specific_drug n_drug_targets combined_centrality_score
 #> DB00098 "FALSE"                     " 8"           "1.52411262378931"       
 #> DB00005 "TRUE"                      "11"           "1.52362129027707"       
@@ -1004,6 +1007,7 @@ head(drug_rank[,-c(5:7)])
 #> DB00031 "FALSE"                     " 9"           "1.52163241261486"       
 #> DB00009 "FALSE"                     " 2"           "1.51881396509812"       
 #> DB00045 "FALSE"                     " 1"           "1.51806798176943"       
+#>
 #>         rank
 #> DB00098 "1" 
 #> DB00005 "2" 
