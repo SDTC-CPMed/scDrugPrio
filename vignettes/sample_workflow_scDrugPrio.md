@@ -954,9 +954,13 @@ effect was on this DEG. The number of counteracted DEGs was recorded in this col
 Given that we have the total number of drug targets and the number of
 directly targeted DEGs, we can use Excel formulas to calculate the value
 for column M - P. For this the following formulas can be used (here specified for row 2):
+
 column M2 ‘n_drug_targets_mimmicking_disease’ = K2-L2
+
 column N2 ‘Counteracting_%’ = K2*100/J2
+
 column O2 ‘Mimmicking_%’ = M2*100/J2
+
 column P2 ‘Outside_model_%’ = (J2-K2)*100/J2
 
 Example:
