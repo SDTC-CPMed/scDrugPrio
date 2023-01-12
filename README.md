@@ -83,28 +83,7 @@ In order to better understand the interactions between DEGs and potential drug c
 # Replication
 Deep Count Autoencoder (DCA)[^12] denoising was applied to each data set through calling the python application from the terminal. Raw expression data files can be found at the corresponding (GEO) repositories.
 
-Analysis of data sets can be replicated based on files provided in the supplementary files, large data files such as DCA adjusted expression files were uploaded to figshare. The uploaded R codes are accomponied by a readme file specifying the directory and data requirements for replication as well as where the data can be found.  If not manually downloaded and inserted into the correct directory, the following functions will download the necessary data files automatically from figshare and store it in the correct sub-directories. Replication with standard codes will however result in long run times and require up to ca 300GB of RAM and access to up to 50 cores. These settings can be altered by the user in the codes if required.
-
-```
-# AIA data
-source("inst/replication_of_analysis_AIA_data.R")
-replication_of_analysis_AIA_data()
-# MS data
-source("inst/replication_of_analysis_MS_data.R")
-replication_of_analysis_MS_data()
-# Pooled batch-corrected CD data
-source("inst/replication_of_analysis_CD_data.R")
-replication_of_analysis_CD_data()
-# CD data for individual patients
-source("inst/replication_of_analysis_INDIVIDUAL_CD_data.R")
-replication_of_analysis_INDIVIDUAL_CD_data()
-# Anti-TNF PsA data
-source("inst/replication_of_analysis_anti_TNF_PsA.R")
-replication_of_analysis_anti_TNF_PsA()
-# Anti-IL17 PsA data
-source("inst/replication_of_analysis_anti_IL17_PsA.R")
-replication_of_analysis_anti_IL17_PsA()
-```
+Analysis of data sets can be replicated based on files uploaded to figshare. Files have to be downloaded manually, as figshare does not allow automated downloads due to authentication issues. Upon unzipping the downloaded meta-data from figshare, we kindly ask that the user moves the respective R code collection (`inst/AIA`, `inst/MS`, `inst/pooled_CD`, `inst/Individual_CD`, `inst/anti_TNF_PsA` or `inst/anti_IL17_PsA`) to the "your_path_file_to_meta_data/R" directory. Each code collection includes a `MAIN.R` file specifying the order in which scripts should be run. Of note is that the replication with standard codes will result in long run times and require up to ca 300GB of RAM and access to up to 50 cores. These settings can be altered by the user in the codes if required.
 
 # References
 
