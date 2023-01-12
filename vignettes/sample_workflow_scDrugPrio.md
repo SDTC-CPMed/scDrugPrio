@@ -98,7 +98,6 @@ need to create a output directory.
 
 ``` r
 dir.create("Sample_output")
-setwd("Sample_output")
 ```
 
 ### Make drug target matrix
