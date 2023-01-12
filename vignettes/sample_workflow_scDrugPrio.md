@@ -1022,10 +1022,10 @@ head(drug_rank[,-c(5:7)])
 #> DB00045 "6"
 ```
 
-Etanercept, ranking #2 is a known anti-TNF inhibitor approved for
+Etanercept, ranking #2 is a anti-TNF inhibitor approved for
 rheumatoid arthritis and hence a valid suggestion. As for other high
 rankings drugs, additional literature searches might reveal some
-potential. Keep in mind though, that these are results that were
+potential. Keep in mind though, these are results that were
 obtained using only a sub-sample of the original data set and therefore
 do not resemble the results in our manuscript.
 
