@@ -14,10 +14,6 @@ source("Codes_from_scPred/extract_LCC.R")
 lit_ppi <- as.matrix(read.table(file = "../Input/literature_PPI/ppi.txt", sep ="\t", header = T, stringsAsFactors = F))
 ppin <- ppin_formatting(lit_ppi)
 
-# transl
-transl <- read.table(file = "../Input/HGNC translation matrix 201108/transl.txt", header = T, stringsAsFactors = F, sep="\t")
-transl <- transl[,c(2,6)]
-
 # PsA drugs
 ra_drug_info <- read.table(file = "../Input/Drugs/drugs_w_indication_RA_DrugBank_20200214.txt", header = T, sep="\t", stringsAsFactors = F, quote = "")
 ra_drugs <- unique(ra_drug_info[,1])
