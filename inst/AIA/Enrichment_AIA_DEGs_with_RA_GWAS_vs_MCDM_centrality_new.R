@@ -9,7 +9,7 @@ library(scales)
 library(ggplot2)
 
 # Load data
-gwas <- as.matrix(read.table(file = "../Input/GWAScat/GWAS_RA_P%3C1e-8.txt",sep="\t", header = T))
+gwas <- as.matrix(read.table(file = "../Input/GWAScat/GWAS_RA_P_smaller_1e-8.txt",sep="\t", header = T))
 gwas <- as.vector(gwas)
 degs <- as.matrix(read.table(file = "../Output/DCA_MAST_DEGs/TRANLATED_SUMMARY_sig_adj_MAST_DEGs_log(1.5)_all_clusters_entrez_symbol.txt",sep="\t",header = T))
 bg_genes <- as.matrix(read.table(file = "../Output/NicheNet/background_genes.txt",sep="\t",header = T))

@@ -9,9 +9,24 @@
 
 # Quality control and filtering of AIA scRNA-seq data was performed prior to the analysis. Cut-offs are specified in the Supplementary files. 
 
-# Required input data need to be downloaded, including the DCA de-noised scRNA-seq matrix. 
+# Required input data needs to be downloaded, including the DCA de-noised scRNA-seq matrix. 
 # As this is not possible without authenticating to figshare, we encourage the user to manually download the required files. 
-# Upon unzipping the downloaded input and output files, codes should be deposit in the "your_file_path/R" directory, which should be made the working directory.
+# Upon downloading meta-data, files need to be positioned in the correct directories (according to README.txt) that can be found on GitHub.
+# R codes (from GitHub) should be deposit in the "your_file_path/R" directory, which also should be made the working directory.
+
+# Directory set-up:
+dir.create(path = "Input")
+dir.create(path = "Input/AIA/")
+dir.create(path = "Input/DCA_adjusted_matrix/")
+dir.create(path = "Input/Drugs/")
+dir.create(path = "Input/GWAScat/")
+dir.create(path = "Input/Human-mouse_homologs/")
+dir.create(path = "Input/literature_PPI/")
+dir.create(path = "Input/Marker_genes/")
+dir.create(path = "Output")
+dir.create(path = "Output/FC_criteria_checking/")
+dir.create(path = "Output/Final_ranking/")
+
 
 # When this is done, codes can be run in the following order.
 

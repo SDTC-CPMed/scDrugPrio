@@ -1,0 +1,36 @@
+
+Required input data needs to be downloaded from figshare (see our GitHub page). 
+As this is not possible without authenticating to figshare, we encourage the user to manually download the required files. 
+
+Upon downloading meta-data, files need to be positioned in the correct directories in order for the codes to work.
+The directory should be set up like this (* indicates a meta-data file that should be downloaded and moved to the directory):
+
+-- Input
+-- -- DCA_adjusted_matrix
+-- -- -- *mean.tsv*
+-- -- -- *latent.tsv*
+-- -- Drugs
+-- -- -- *drugs_w_indication_RA_DrugBank_20200214.txt*
+-- -- -- *drug_targets_unique_literature_ppi.txt*
+-- -- -- *drugs_with_identical_drug_target_combinations_literature_PPI.txt*
+-- -- -- *all_drug_targets_drug_bank.txt*
+-- -- GWAScat
+-- -- -- *GWAS_RA_P_smaller_1e-8.txt*
+-- -- mouse_homologs
+-- -- -- *transl.txt*
+-- -- literature_PPI
+-- -- -- *ppi.txt*
+-- -- Marker_genes
+-- -- -- *Markers_for_cell_typing_heatmap_RA.txt*
+-- R
+-- -- *R codes from GitHub*
+-- Output
+-- -- FC_criteria_checking
+-- -- -- *SUMMARY_only_drugs_passing_network_criteria_evaluated.txt*
+-- -- Final_ranking
+-- -- -- *FINAL_drug_ranking_evaluated.txt*
+-- -- -- *FINAL_drug_ranking_evaluated.xlsx*
+
+This can be done by running the first lines in the MAIN.R file before tranfering downloaded data to the appropriate directories.
+
+R codes (from GitHub) should be deposit in the "your_file_path/R" directory, which also should be made the working directory.
