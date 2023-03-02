@@ -31,6 +31,6 @@ The directory should be set up like this (* indicates a meta-data file that shou
 -- -- -- *FINAL_drug_ranking_evaluated.txt*
 -- -- -- *FINAL_drug_ranking_evaluated.xlsx*
 
-This can be done by running the first lines in the MAIN.R file before tranfering downloaded data to the appropriate directories.
+This can be done by running the first lines in the MAIN.R file before transfering downloaded data to the appropriate directories.
 
 R codes (from GitHub) should be deposit in the "your_file_path/R" directory, which also should be made the working directory.
