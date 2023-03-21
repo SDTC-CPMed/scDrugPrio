@@ -1,0 +1,607 @@
+---
+title: "Sample workflow in scPred"
+author: "Samuel Schaefer"
+date: 2022-01-26
+#output: rmarkdown::html_vignette
+output:
+  md_document:
+    variant: markdown_github
+vignette: >
+  %\VignetteIndexEntry{sample_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE, cache = FALSE}
+require(knitr)
+require(igraph)
+options(rmarkdown.html_vignette.check_title = FALSE)
+knitr::opts_chunk$set(
+  collapse = TRUE, echo = T,
+  comment = "#>"
+)
+```
+
+## Overview
+scPred presents a strategy for drug repositioning based on scRNA-seq based, multidimensional and multicellular disease models that incorporate the key biological and pharmacological properties. scPred was primarily developed using data from a mouse model (antigen induced arthritis, AIA) of rheumatoid arthritis (RA) and validated in *in vitro* experiments and by prediction precision for known drug-disease pairs in AIA and two human scRNA-seq data sets (multiple sclerosis, MS, and Crohn's disease, CD).
+
+In this vignette we will go through all steps required to format the input data, create intercellular and intracellular disease models, select drug candidates for each cell type and create a final ranking for all the candidates.  
+
+Workflow of scPred:
+
+1. Setup
+    - Installation of scPred
+2.  Data formatting
+    - Make drug target matrix
+    - Extract largest connected component (LCC) of protein-protein interaction network (PPIN)
+    - Select unique drug target combinations found in LCC of PPIN
+3. Deep count autoencoder (DCA) denoising of expression data
+4. Formatting of single cell RNA-sequencing data
+    - Seurat for clustering
+    - MAST framework for calculation of differentially expressed genes
+    - Cell typing using marker genes
+5. NicheNet ligand activity analysis
+    - Background gene calculation for NicheNet
+    - Centrality calculation in MCDM 
+6. Intracellular disease models
+    - Network distance calculation
+    - Summary of network distance calculations
+    - Evaluation of drug candidates effect on targeted DEGs
+    - Drug target centrality in cell type specific disease modules
+7. Final drug candidate ranking
+
+This vignette guides you in detail through all these steps. As example data, we are using the scRNA-seq data for the antigen induced arthritis (AIA) model.
+
+## Setup and data formatting
+
+### Installation of scPred
+```{r, eval= FALSE}
+# From GitHub:
+install.packages("devtools")
+devtools::install_github("SDTC-CPMed/scPred")
+
+# or local installation:
+install.packages("scPred_1.0.0.tar.gz", repos = NULL, type = "source")
+library(scPred)
+```
+
+```{r, include= FALSE}
+library(scPred)
+```
+
+Should difficulties occur when installing the dependencies for scPred try `source("scPred/inst/SETUP.R")`.
+
+```{r setup, include = F}
+knitr::opts_knit$set(root.dir = "../../new_220809/")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data formatting
+
+scPred comes equipped with some sample data that was prepared to increase the excecutability of the code below on your personal machine. This sample data does not correspond to the data used originally in the publication. Data files used for the publication can be downloaded from [zenodo](zenodo.com). 
+
+Lets, load the sample data:
+
+```{r}
+#load_sample_data()
+setwd("scPred/data/")
+load(file = "drug_bank_example_data.rda")
+load(file = "translation_mouse_human.rda")
+load(file = "lit_ppi.rda")
+load(file = "denoised_DCA.rda")
+load(file = "latent_DCA.rda")
+```
+
+
+As some of the function will automatically save their output we will need to create a output directory.  
+```{r}
+dir.create("Sample_output")
+setwd("Sample_output")
+```
+
+### Make drug target matrix
+One of the first tasks is to filter the DrugBank data. As an example, we have selected the information for 150 drugs included in the DrugBank data, please see the variable 'drug_bank_example_data'. 
+
+```{r}
+head(drug_bank_example_data)
+```
+
+This data has to be filtered for our predictions. Specifically, we wanted to restrict predictions to drugs that are indicated for use on 'Humans', are (or have been) FDA approved and have at least one known human drug target.   
+
+```{r}
+# Include only drugs for 'Humans'
+drug_bank_example_data <- drug_bank_example_data[grepl(pattern = "Humans", x = drug_bank_example_data[,8]),] # human
+# Include only 'approved' drugs
+drug_bank_example_data <- drug_bank_example_data[grepl(pattern = "approved", x = drug_bank_example_data[,3]),] # approved
+# Include only drugs with at least one known drug target
+drug_bank_example_data <- drug_bank_example_data[!is.na(drug_bank_example_data[,6]),] # valid drug target
+
+# number of unique drugs after filtering
+length(unique(drug_bank_example_data[,1]))
+```
+
+Later we will also have to integrate drug data with scRNA-seq data and the human protein-protein interaction network (PPIN) which fosters the need for a common gene annotation system. Here we choose the Entrez gene ID system, as this was original gene annotation system for the human PPIN. For translating human genes to mouse genes and Entrez gene symbols to Entrez gene IDs we data from NCBI, represented by 'transl'.
+
+```{r}
+head(translation_mouse_human)
+
+# translate drug target symbols to entrez gene IDs 
+drug_bank_example_data[,6] <- translation_mouse_human[match(drug_bank_example_data[,6], translation_mouse_human[,1]),2]
+drug_bank_example_data <- drug_bank_example_data[!is.na(drug_bank_example_data[,6]),]
+```
+
+```{r}
+# Summarize drug targets for all drugs, translates them to Entrez Gene IDs and saves matrix in 'data/'
+# Every column includes the drug targets of one drug.
+drug_target_matrix <- create_drug_target_matrix(drugID = drug_bank_example_data[,1], target = as.numeric(drug_bank_example_data[,6]))
+
+drug_target_matrix[1:5,1:6]
+```
+
+### Selection of the largest connected component (LCC) of the protein-protein interaction network (PPIN)
+Exclusion of nodes that are not connected to the largest connected component (LCC) of the protein-protein interaction network (PPIN) is crucial
+for network distance calculations so that path lengths have finite values. In order to use only the LCC of the chosen PPIN in further calculations 
+we apply the following function:
+```{r}
+# Full PPIN (literature curated) - genes annotated as Entrez Gene IDs
+head(lit_ppi)
+dim(lit_ppi)
+
+# n unique proteins in PPIN
+length(unique(as.vector(lit_ppi)))
+
+# Select LCC
+ppin <- ppin_formatting(lit_ppi)
+dim(ppin)
+
+# n unique proteins in LCC of PPIN
+length(unique(as.vector(ppin)))
+```
+As can be seen above the LCC of the literature curated PPIN includes 17651 unique proteins, compared to the 17706 proteins in the full literature PPIN.
+Based on the difference in dimension we can also tell that exclusion of the 55 proteins that were not connected to the LCC reduced the number of protein-protein interaction by 351444 - 346324 = 5120.
+
+### Select unique drug target combinations found in LCC of PPIN
+```{r}
+# number of drug targets in drug_target_matrix
+sum(!is.na(drug_target_matrix))
+
+# number of drug targets in the drug_target_matrix that were not found in PPIN
+sum(drug_target_matrix[!is.na(drug_target_matrix)] %in% unique(as.vector(ppin)))
+
+# are there drugs with no drug targets in PPIN?
+sum(colSums(!is.na(drug_target_matrix)) == 0)
+
+# are there drugs with identical drug targets?
+sum(duplicated(t(drug_target_matrix)))
+```
+As seen above, the raw version of `drug_target_matrix` is not in optimal shape for network distance calculation yet. It still includes drug targets that are not found in the PPIN as well as 569 duplicated drug target entries. To speed up computations and decrease file size we will apply the function`prepare_drug_target_matrix_for_network_distance_calculation()` that will exclude all drug targets not found in the PPIN as well as excludes duplicated sets of drug targets. Only unique drug target combinations will remain. As we after network distance calculations plan to map results for unique drug target combinations back to individual drugs, `prepare_drug_target_matrix_for_network_distance_calculation()` prepares a file titled `paste("SAME_DRUG_TARGETS_", file_name, ".txt", sep="")` that notes which drugs had identical targets in a given PPIN. This is especially important given that two drugs might have the same drug targets and hence the same network distances in the PPIN, but yet different pharmacological actions on their target. 
+
+``` {r}
+#Preparation of drug target matrix for network distance calculation.
+drug_target_matrix <- prepare_drug_target_matrix_for_network_distance_calculation(ppin, drug_target_matrix, file_name = "in_lit_ppin", out_dir = "Sample_output")
+
+# File noting which drugs had identical drug tragets in the PPIN
+# Left column represents the DrugBank ID of a drug that will represent a unique set of drug targets in the network distance calculation
+# Right column represents the DrugBank IDs of all individual drugs that have this drug target combination 
+same_drugs <- read.table(file = "Sample_output/SAME_DRUG_TARGETS_in_lit_ppin.txt", sep="\t", header = T, stringsAsFactors = F)
+head(same_drugs)
+```
+
+## Deep count autoencoder denoising of expression data
+Having prepared drug data and protein interaction networks for analysis, we need to format the scRNA-seq data set for calculation. Initially, quality criteria is applied to the raw single cell data aiming to exclude cells of poor quality and genes that are only expressed in very few cells. After this, we applied Deep Count Autoencoder (DCA) denoising, as described by [Gökcen et al.](https://www.nature.com/articles/s41467-018-07931-2), following the recommendations at [theislab/dca](https://github.com/theislab/dca). Briefly that meant:
+```
+# Installation
+$ conda install -c bioconda dca
+
+# Application to single cell matrix (represented by matrix.csv)
+$ dca matrix.csv results
+```
+DCA creates several output files documenting the denoising process, namely: dispersion.tsv, dropout.tsv, latent.tsv and mean.tsv
+
+mean.tsv corresponds to the DCA denoised gene expression matrix. DCA also outputs a representation of the original single-cell data in the latent space. This representation has fewer features than the original data and represents intercellular expression differences generally better than purely linear PCA models.The latent space representation is also corrected for single-cell data artefacts such as dropouts and varying library sizes.
+
+## Formatting of single cell RNA-sequencing data
+
+### Seurat for clustering
+Using Seurat 3.1.0, we cluster the data based on DCA-derived latent features for optimal cell typing. A detailed vignette on clustering using Seurat can be found [here](https://github.com/satijalab/seurat). In the code below `denoised_DCA` represent the DCA derived `mean.tsv` data and `latent_DCA` represent the DCA derived `latent.tsv` file. Both `denoised_DCA` and `latent_DCA` are sample data that were created by randomly subsampling the originally used data.  In the single cell RNA-sequencing based gene expression matrix (`denoise_DCA`) each row represents a gene and each column an individual cell. Observe that some Seurat functions might have been altered slightly if using Seurat v4. One such function is `FindNeighbors()` where the default method for k-nearest neighbor identification has been changed to `annoy` for computational efficiency, our results however were produced using `nn.method="rann` which was the default in Seurat v3.
+
+```{r}
+#devtools::install_version("Seurat", version = "3.1.0")
+library(Seurat)
+set.seed(12)
+
+# Create Seurat object using denoised expression values
+denoised_DCA_clustered <- CreateSeuratObject(counts = denoised_DCA, project = "DCA_denoised_clustered", min.cells = 1, min.features = 1)
+
+# Dimensional reduction using DCA derived latent features instead of linear principal components
+latent_DCA <- latent_DCA[,match(colnames(denoised_DCA), colnames(latent_DCA))]
+pca <- new("DimReduc", 
+           cell.embeddings = t(latent_DCA), 
+           assay.used = "RNA", 
+           key = "PC_")
+
+denoised_DCA_clustered@reductions$pca <- pca
+
+# Clustering
+denoised_DCA_clustered <- FindNeighbors(object = denoised_DCA_clustered, 
+                                        reduction = "pca", 
+                                        dims = 1:nrow(latent_DCA),
+                                        k.param =  25,
+                                        nn.method="rann") # shared nearest neighbor graph + Jaccard index
+denoised_DCA_clustered <- FindClusters(denoised_DCA_clustered, resolution = 0.25) # Louvain algorithm
+
+# plot clusters
+denoised_DCA_clustered <- RunTSNE(denoised_DCA_clustered, dims = 1:32)
+TSNEPlot(denoised_DCA_clustered)
+```
+
+Above code results in clustering of the scRNA-seq data. In `CreateSeuratObject()` we can set min.cells = 1 and min.features = 1, as we previously filtered the raw scRNA-seq expression matrix and applied quality criteria. Application of the `FindNeighbors()`and `FindClusters()`function with standard parameters will result in Seurat constructing a shared nearest-neighbour graph followed by application of the Louvain algorithm to the shared nearest neighbour graph to identify clusters. In `FindNeighbors()`, specifying `k = 15`leads to Seurat using the 15 nearest neighbours as defined by Jaccard index. In `FindClusters()` the resolution parameter will affect the number of identified clusters. The value of the resolution parameter will depend on the size of the data set (number of cells). Arbitrary optimization of `k` and `resolution` will be required for new data sets in order to identify biologically valuable clusters, though there have been recent suggestions by [satijalab](https://satijalab.org/seurat/articles/get_started.html) on a more systematic optimization process in which data is initially overclustered and nodes og the cluster tree are merged until the ideal threshold is reached.
+
+Having now clustered the data we will need to save cluster outcomes. 
+
+```{r}
+# Save the clustering outcome
+id <- Idents(denoised_DCA_clustered)
+id <- cbind(as.character(names(id)), as.character(id))
+colnames(id) <- c("Cell_ID", "Cluster_ID")
+write.table(id, file = "Cell_identity.txt", sep="\t", col.names = T, row.names = F)
+
+# n cells per cluster
+table(id[,2])
+```
+
+### Cell typing using marker genes
+
+For biological interpretation one might want to explore which cell type corresponds to which cluster. This information is not essential for the performance of the scPred package though and can be seen as a add-on. While cell typing can be a time consuming and rigorous process, for the purpose of this example workflow we keep it short and limit ourself to a few known marker genes.
+
+```{r}
+library(doParallel)
+library(matrixStats)
+library(reshape2)
+library(ggplot2)
+library(viridis)
+
+# extract count-adjusted expression values of markerX <-  genes
+X <- denoised_DCA_clustered@assays$RNA@counts
+X <- X[rownames(X)%in% marker_genes,]
+X <- as.matrix(X)
+
+denoised_DCA_clustered@active.ident <- as.factor(floor(as.numeric(as.character(denoised_DCA_clustered@active.ident))))
+unique_cl <- unique(as.numeric(as.character(denoised_DCA_clustered@active.ident)))
+
+# calculate mean expression per cluster
+out <- foreach(cl = c(1:length(unique_cl)), .combine = "rbind") %do% {
+  exp <- X[, colnames(X)%in%id[id[,2]==unique_cl[cl],1]]
+  exp <- exp[match(marker_genes, rownames(exp)),]
+  return(rowMeans(exp))
+}
+colnames(out) <- marker_genes
+rownames(out) <- unique_cl
+out <- out[,colSums(!is.na(out))>0]
+
+# Z - score
+mode(out) <- "numeric"
+temp <-colSds(out)
+out <- t(t(out) - colMeans(out)) # center around 0
+out <- t(t(out)/temp) # make z-scores
+
+# Make heatmap
+cl_order <- c(3,2,4,0,1)
+out <- melt(out)
+out$Var1 <- as.character(out$Var1)
+out$Var1 <- factor(x = paste("Cluster_",as.character(out$Var1),sep=""), levels = paste("Cluster_",unique_cl[match(cl_order, unique_cl)],sep=""), ordered = T)
+
+thresh <- 1.5
+
+my_breaks <- seq(from = -thresh, to = thresh, by = 0.5)
+my_labels <- seq(from = -thresh, to = thresh, by = 0.5)
+
+out[out[,3] < -thresh,3] <- -thresh
+out[out[,3] > thresh,3] <- thresh
+
+heatmap <- ggplot(out, aes(x=Var2, y=Var1, fill=value)) +
+  geom_raster(na.rm = T) + scale_fill_gradientn(colours = viridis(12), name = "count", breaks = my_breaks, labels = my_labels, limits = c(-thresh,thresh)) +
+  theme(axis.text.x=element_text(angle=90, hjust=1))#, axis.text.y=as.character(), axis.ticks.y=element_blank())
+
+plot(heatmap)
+```
+
+Based on the above heatmap, Cluster 1 and 0 seem to be B cells. Cluster 4 seems to be T cells. Cluster 2 expresses myeloid markers and Cluster 3 expresses several myeloid markers in semi-high quantities, so let's for the purpose of this example assume it is a form of myeloid cell. Of course, the exact nature of the clusters could be explored with additional marker genes or different cell typing approaches.
+
+### MAST framework for calculation of differentially expressed genes
+DEG calculation was performed using the MAST framework which was called on through Seurat. The MAST framework deploys a scRNA-seq tailored hurdle model for evaluation of expression changes between groups. Here we chose to calculate DEGs between cells from sick and healthy samples within the same cluster. Before we start DEG calculations we will need to define groups of cells between we wish to calculate DEGs. While we believe the DEG calculation between sick and healthy cells within the same cluster to be crucial for scPred, there are many ways in which a user can make Seurat understand which group of cells it should use. Our approach below is merely a suggestion.
+
+```{r}
+id[grepl("Sick", id[,1]),2] <- as.numeric(id[grepl("Sick", id[,1]),2]) + 0.1
+table(id[,2])
+# --> we have > 3 healthy and sick cells in each cluster enabling DEG calculation for all clusters
+
+# Set new identities in Seurat object
+temp_id <- as.factor(as.numeric(id[,2]))
+denoised_DCA_clustered@active.ident <- temp_id
+
+# unique clusters
+temp_id_unique <- sort(as.numeric(unique(id[,2])))
+```
+
+Now that we have defined groups for DEG calculation we calculate DEGs between healthy and sick cells in each cluster individually.
+
+```{r, eval = F}
+#if (!require("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install("MAST")
+
+# Running MAST DEG calculation on DCA denoised data
+calculate_DEGs <- function(temp_id_unique, outdir, seurat_obj, pseudo.count = 0, logfc = log(1.5)){
+  # Running MAST DEGs analysis
+  for(i in 1:(length(temp_id_unique)/2)){
+    pos <- i*2-1
+    
+    temp <- id[id[,2] %in% temp_id_unique[pos],]
+    id1 <- as.numeric(temp[,2])
+    names(id1) <- temp[,1]
+    id1 <- as.factor(id1)
+    
+    temp <- id[id[,2] %in% temp_id_unique[pos+1],]
+    id2 <- as.numeric(temp[,2])
+    names(id2) <- temp[,1]
+    
+    temp <- FindMarkers(seurat_obj,
+                        slot = "counts", # DCA denoised, log10 transformed counts
+                        test.use = "MAST",
+                        ident.1 = names(id1), # important that this is a factor vector with cell labels as names
+                        ident.2 = names(id2),
+                        only.pos = F,
+                        random.seed = 3,
+                        pseudocount.use = pseudo.count, # not needed as DCA is already log10 transformed 
+                        logfc.threshold = logfc,
+                        min.pct = 0.1,
+                        min.cells.group = 3)
+      if(exists("temp")){
+        write.table(temp, file = paste(outdir, "/Cluster_", temp_id_unique[pos], ".txt",sep=""),sep="\t",col.names=NA,row.names=T)
+        rm(temp)
+      }
+  }
+}
+calculate_DEGs(temp_id_unique, outdir = "Sample_output", seurat_obj = denoised_DCA_clustered)
+
+# Example output (plasma B cell DEGs):
+head(read.table(file = "Sample_output/Cluster_1.txt", sep="\t", header = T, stringsAsFactors = F))
+```
+
+```{r, eval = T, echo = F}
+head(read.table(file = "Sample_output/Cluster_1.txt", sep="\t", header = T, stringsAsFactors = F))
+```
+
+Next we will make a summary of all clusters DEGs for easy access by future functions.
+
+```{r}
+# DEG summary for all clusters
+outdir = "Sample_output"
+files <- list.files(path = outdir, pattern = "Cluster_")
+
+degs.clusters.h.vs.s <- matrix(NA, nrow = denoised_DCA_clustered@assays$RNA@counts@Dim[1], ncol = length(files))
+
+for(i in 1:ncol(degs.clusters.h.vs.s)){
+  temp <- read.table(file = paste(outdir, "/", files[i], sep=""), sep="\t", header = T)
+  temp <- temp[temp$p_val_adj < 0.05,]
+  temp <- as.character(temp[order(as.numeric(temp$p_val_adj), decreasing = F),1]) # order by significance
+  if(length(temp)>0){
+    degs.clusters.h.vs.s[1:length(temp),i] <- temp
+  }
+  rm(temp)
+}
+colnames(degs.clusters.h.vs.s) <- unlist(strsplit(files, split = ".txt"))
+
+# remove empty rows and columns
+degs.clusters.h.vs.s <- degs.clusters.h.vs.s[rowSums(!is.na(degs.clusters.h.vs.s))>0,]
+head(degs.clusters.h.vs.s)
+
+# save
+write.table(degs.clusters.h.vs.s, file = paste(outdir, "/SUMMARY_sig_adj_MAST_DEGs_log(1.5)_all_clusters.txt", sep=""),sep="\t", col.names = T, row.names = F)
+```
+
+Here we can see that only Cluster 0 and Cluster 1 (the suspected B cell clusters) express several DEGs. Cluster 2 (suspected myeloid cell) expresses one DEG at a fold change cut-off of log(1.5). The remaining clusters harbour no DEGs at the choosen cut-off.
+
+## NicheNet ligand activity analysis
+To generate the predicted cell type interactions we apply NicheNet ligand activity analysis. In order for NicheNet ligand activity analysis to suggest a directed ligand interaction between two cell types NicheNet considers the expression of ligands in the sender cell type as well as the evidence of ligand-related activation in the receiver cell type as evidenced by the changed expression in proteins downstream of the receptor. For analysis, NicheNet even requires information on the background genes (all expressed genes) in the receiving cell type.
+
+In the by us performed analysis we define these gene sets in the following way:
+- potential ligands in the sender cell type = DEGs of the sender cell type that are also ligands (as defined by NicheNet)
+- gene set of interest in the receiving cell type = all DEGs of the receiving cell type
+- background genes in the receiving cell type = all genes that in the receiving cell type have a aggregated expression (Ea(i) >= 0.2) where Ea(i) = log2(mean(10^D[i,])). Here D represents the log10 normalized, denoised expression matrix for the cells of this cell type and i represents an individual gene.
+
+Based on the inferred cell type ligand interactions we can create a cell type - cell type interaction network (intercellular network) and use it to calculate the centrality of any cell type. 
+
+``` {r}
+# format cell IDs to fit in function
+cell_IDs <- denoised_DCA_clustered$seurat_clusters
+cell_IDs <- foreach(i = c(1:length(unique_cl))) %do% {
+  temp <- cell_IDs[as.character(cell_IDs) == unique_cl[i]]
+  return(names(temp))
+}
+names(cell_IDs) <- paste("Cluster_", unique_cl, sep="")
+
+# background gene calculation
+bg <- background_genes_NicheNet(data = as.matrix(denoised_DCA_clustered@assays$RNA@counts), cell_IDs = cell_IDs)
+
+# make sure DEGs and background genes are annotated in human entrez symbols
+degs_transl <- degs.clusters.h.vs.s
+
+for(i in 1:ncol(degs_transl)){
+  temp <- translation_mouse_human[match(x = degs_transl[,i], table =  translation_mouse_human[,3]),1]
+  temp <- temp[!is.na(temp)]
+  degs_transl[,i] <- NA
+  if(length(temp)>0){
+      degs_transl[1:length(temp),i] <- temp
+  }
+}
+head(degs_transl)
+degs_transl <- degs_transl[rowSums(!is.na(degs_transl))>0, colSums(!is.na(degs_transl))>0]
+
+for(i in 1:ncol(bg)){
+  temp <- translation_mouse_human[match(x = bg[,i], table =  translation_mouse_human[,3]),1]
+  temp <- temp[!is.na(temp)]
+  bg[,i] <- NA
+  if(length(temp)>0){
+      bg[1:length(temp),i] <- temp
+  }
+}
+head(bg)
+bg <- bg[rowSums(!is.na(bg))>0, colSums(!is.na(bg))>0]
+
+# NicheNet ligand activity
+dir.create(path = "Sample_output/NicheNet", showWarnings = F)
+all_ligand_activity <- NicheNet_ligand_activity_analysis(degs = degs_transl, background_genes = bg, out_dir = "Sample_output/NicheNet", cores = 5)
+print(head(all_ligand_activity))
+```
+As can be seen above, the one DEG for Cluster 2 could not be translated from a mouse to human gene annotation and therefore no ligand activity for Cluster 2 could be calculated.  
+
+## Intercellular centrality
+Given that we now have predicted the ligand interactions between all possible cell type combinations (of cell types expressing DEGs), we can create a cell type interaction network from which we infer a cell types centrality. 
+
+```{r}
+# Calculate centrality for cell types based on ligand activity outcomes
+intercellular_centrality <- NicheNet_cell_type_centrality(all_ligand_activity, out_dir = "Sample_output/NicheNet/")
+print(intercellular_centrality)
+```
+
+We see that Cluster 0 seems to be more central as it has a much larger number of outgoing ligand interactions, indicative of it's upstream effect.
+
+## Intracellular disease models
+We can also calculate the centrality of drug targets in each cell types largest connected component (LCC) formed by DEGs. This gives us a proxy as to how relevant a drug targets are in a cell type. If several drug targets, target the cell type's LCC the proxy ('intracellular_drug_target_centrality') equals the geometric mean of drug target centralities. In this way, one centrality value is derived for each drug in each cell type individually.For final prioritization of drugs in the full intercellular disease network we derive the mean intracellular centrality as the artihemtric mean of all cell type's individual intracellular centralities.
+
+### Intracellular centrality
+```{r}
+# make sure ppin and degs have the same gene annotation system so they can be matched
+for(i in 1:ncol(degs.clusters.h.vs.s)){
+  temp <- translation_mouse_human[match(x = degs.clusters.h.vs.s[,i], table =  translation_mouse_human[,3]),2]
+  temp <- temp[!is.na(temp)]
+  degs.clusters.h.vs.s[,i] <- NA
+  if(length(temp)>0){
+      degs.clusters.h.vs.s[1:length(temp),i] <- temp
+  }
+}
+degs.clusters.h.vs.s <- degs.clusters.h.vs.s[rowSums(!is.na(degs.clusters.h.vs.s))>0, colSums(!is.na(degs.clusters.h.vs.s))>0]
+mode(degs.clusters.h.vs.s) <- "numeric"
+
+# run intracellular centrality analysis
+dir.create("Sample_output/intracellular_centrality", showWarnings = F)
+intra_cent <- intracellular_drug_target_centrality(ppin = ppin,
+                                     drug_target_matrix = drug_target_matrix,
+                                     degs = degs.clusters.h.vs.s,
+                                     file_name = "intracellular_centrality_drugs_lit_PPIN",
+                                     centrality_alg = "eigenvector centralities",
+                                     out_dir = "Sample_output/intracellular_centrality")
+print(head(intra_cent))
+```
+
+### Network distance calculation
+
+#save(ppin, drug_target_matrix, degs.clusters.h.vs.s, file = "before_drug_prediction_save.RData")
+#load("before_drug_prediction_save.RData")
+
+```{r, eval = F}
+dir.create("Sample_output/network_distances")
+
+for(i in 1:ncol(degs.clusters.h.vs.s)){ # For every cell types DEGs
+  # calculate average closest distances between all drugs and the degs
+  # if possible on your machine this should be parallelized (cores > 1), though the function will be memory heavy
+  average_closest_distance_network_drug_screening(ppin = ppin,
+                                               drug_target_matrix = drug_target_matrix,
+                                               disease_genes = as.numeric(degs.clusters.h.vs.s[,i]),
+                                               file_name = colnames(degs.clusters.h.vs.s)[i],
+                                               cores = 3,
+                                               out_dir = "Sample_output/network_distances")
+}
+```
+
+This above code creates one file for every iteration. Let's have a look:
+
+```{r}
+data <- read.table(file = paste("Sample_output/network_distances/drug-disease_closest_distances_vs_random_bin_adjusted__Cluster_0.txt", sep=""), sep ="\t", header = T, stringsAsFactors = F)
+
+print(head(data))
+```
+
+### Gather information on pharmacological actions and on targeted DEGs fold change
+
+```{r}
+# lets translate the raw drug bank matrix back to human symbols in order to make the interpretation a little bit easier
+drug_bank_example_data[,6] <- translation_mouse_human[match(drug_bank_example_data[,6], translation_mouse_human[,2]),1]
+head(drug_bank_example_data)
+
+# translate DEG files
+lf <- list.files(path = "Sample_output", pattern = "Cluster_")
+dir.create(path = "Sample_output/translated_DEGs", showWarnings = F)
+for(i in 1:length(lf)){
+  temp <- read.table(file = paste("Sample_output/",lf[i],sep=""), sep = "\t", header = T, stringsAsFactors = F)
+  temp <- temp[temp$p_val_adj < 0.05,]
+  temp[,1] <- translation_mouse_human[match(temp[,1], translation_mouse_human[,3]),1]
+  if(any(!is.na(temp[,1]))){
+    temp <- temp[!is.na(temp[,1]),]
+    write.table(temp, file = paste("Sample_output/translated_DEGs/",lf[i],sep=""), sep="\t", col.names = T, row.names = F)
+  }
+  rm(temp)
+}
+
+# get paths to translated DEG files
+deg_files <- list.files("Sample_output/translated_DEGs", pattern = "Cluster_", full.names = T)
+print(deg_files)
+# get paths to average closest netork distances
+drug_dists <- list.files("Sample_output/network_distances", pattern = "drug-disease_closest_distance", full.names = T)
+print(drug_dists)
+# save names
+save_name <- unlist(strsplit(list.files("Sample_output/translated_DEGs", pattern = "Cluster_"), split = ".txt"))
+# make output folder
+dir.create("Sample_output/FC_criteria_checking", showWarnings = F)
+
+fc_evaluation <- pharma_effect_on_fold_change(drug_dist_files = drug_dists, deg_files = deg_files, pharma_effect = drug_bank_example_data[,c(1,6:7)], save_names = save_name, out_dir = "Sample_output/FC_criteria_checking")
+```
+
+
+### Summary of network distance calculations
+
+For the next step we need a summary of the above calculated network distances. The summary will only include drugs that pass our selection criteria of zc < -1.64 and dc < 1. The summary shall then be used to evaluate whether the drugs also pass the third selection criterion, namely that at least on DEG is counteracted by a drug target.
+
+```{r}
+# select output files based on file names
+lf <- list.files(path = "Sample_output/FC_criteria_checking", pattern = "Cluster_", full.names = T)
+
+# attach the remaining file path
+lf <- paste("Sample_output/network_distances/",lf, sep="")
+
+out <- combine_evaluation_files(files = lf, label_for_files = label, output_file_name = "SUMMARY_drug_dist.txt", cores = 1)
+print(head(out))
+```
+
+
+### Evaluation of drug candidates effect on targeted DEGs
+This is a manual step due incomplete, inconsistent and sometimes unclear description of therapeutic effect in DrugBank. In this step we evaluate for every directly targeted DEG whether it's fold change is counteracted by the drug or rather mimicked. This binary description of effect is needed for further drug candidate selection, where we find that drugs that counteracted at least one DEG were more likely to be drugs approved for the disease (and therefore more likely to have a disease-modyfing effect).
+
+To record whether the drug counteracted a DEG or not we used the columns 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', and 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'. Additionally, we created columns 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' and 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' in an attempt of using the percentages of targeted DEGs as a drug candidate selection parameter, though it later showed to have no added value over the column 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'.  
+
+For manual evaluation, we opened the file created in the step above by 'combine_evaluation_files()' in Excel. For the column 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' the value had to be determined manually. This meant checking what the direction of the fold change (FC) was for a given DEG and what the drug effect was on this DEG.
+
+Example:
+
+*INSERT SCREENSHOT OF EXCEL FILE*
+
+Given that we have the total number of drug targets and the number of directly targeted DEGs, we can use Excel formulas to calculate the value for column 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' and 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' given the value in 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'. For this the following formulas can be used:
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' = 
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' = 
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' = 
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' = 
+
+This manual step might at times even require literature research, as the drug effect might not be clearly described. While it is up to the user, we recommend the literature-gained insights are recorded in a standardized matter. For this, we created the 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' in which we stored a short description of 1) which drug target literature was searched for, 2) the result of the search and 3) the PMID for the reference. Furthermore, we then updated the drug effect column 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' to include this new gained knowledge.
+
+*INSERT SCREENSHOT OF EXCEL FILE*
+
+## Final drug candidate selection and ranking
+
+```{r}
+
+
+```
+
+
