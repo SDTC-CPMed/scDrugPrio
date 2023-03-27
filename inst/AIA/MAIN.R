@@ -1,7 +1,5 @@
 
 # This script indicates the order in which scripts were run to attain results.
-# If needed, this script will download the necessary meta-data from figshare.
-
 
 # FUNDAMENTAL RESULTS
 ############################################################################
