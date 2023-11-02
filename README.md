@@ -61,7 +61,7 @@ devtools::install_github("SDTC-CPMed/scDrugPrio")
 
 ## Input data
 
-scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536. Meta-data can be found on figshare [10.6084/m9.figshare.21785333](https://figshare.com/s/d75d0136702ba324c1d2).
+scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536. Observe that the raw expression matrix is packaged as a .csv.gz file. If this leads to problems, we suggest decompressing by running ```find -name  'GSE193536_Joint_expression_matrix.csv.gz' -exec gzip -d {} \;``` in Linux command line.  Meta-data can be found on figshare [10.6084/m9.figshare.21785333](https://figshare.com/s/d75d0136702ba324c1d2).
 
 scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^2]. Meta-data for the batch-corrected analysis can be found on figshare [10.6084/m9.figshare.21842193](https://figshare.com/s/eb05de865ae3e560eb55).
 
