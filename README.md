@@ -18,6 +18,7 @@ In the underlying [publication]("....") we exemplify the following case-of-use s
 
 Additionally, it is imaginable that scDrugPrio might be used in a basket clinical trial with a finite set of possible treatments, for prospective assignment of patients to treatments, or for other drug related research questions.
 
+
 ## Overview 
 
 <p align="center">
@@ -25,6 +26,7 @@ Additionally, it is imaginable that scDrugPrio might be used in a basket clinica
 </p>
 
 **Figure 2: Overview of the scDrugPrio workflow.** Single-cell RNA-sequencing (scRNA-seq) data from either individuals or groups of patients are preprocessed by undergoing quality control, denoising, clustering, cell typing and differentially expressed gene (DEG) calculation. DEGs for each cell type were calculated between healthy and sick samples. Using DEGs alongside information on drugs, scDrugPrio selects drug candidates (for each cell type; CT) whose gene targets are **1)** in network proximity to DEGs and **2)** who counteract disease-associated expression changes. These cell type-specific drug candidates are next ranked using intracellular and intercellular centrality. **3)** Intracellular centrality is computed based on the centrality of drug targets in the largest connected component (LCC) formed by DEGs and functions as a proxy for drug target importance. **4)** Intercellular centrality measures centrality in disease-associated cellular crosstalk networks called multicellular disease models (MCDMs). **5)** To derive a final ranking that aggregated cell type-specific drug selection and ranking into one list, drug candidates were ranked using a composite score of intra- and intercellular centralities.
+
 
 ## Input and output
 
@@ -43,15 +45,29 @@ We do not consider preprocessing steps below to be part of the scDrugPrio framew
 
 **Figure 2: scDrugPrio computational workflow, input and output data.** Initially, data are preprocessed following a standard approach, resulting in the calculation of cell type-specific differentially expressed genes (DEGs) between sick and healthy cells. The need for batch correction was evaluated through heterogeneity analyses as described in the methods and supplementary methods section. The DEG calculation utilized either paired samples (e.g., one healthy and one sick sample) from an individual or pooled samples from several healthy controls and patients. The scDrugPrio framework then performs drug selection using DEGs and drug data for network proximity calculation. The cell type-specific drug candidates are aggregated into a final drug ranking using intracellular and intercellular centrality. Gray parallelograms represent data files, yellow cylinders represent external data and green rombs indicate decision points.
 
-## Intercellular disease models / Multicellular disease models (MCDMs)
 
-After scRNA-seq data had been denoised, clustered and differentially expressed genes (DEGs) had been calculated we applied [NicheNet](https://github.com/saeyslab/nichenetr)[^1] to select ligand-target interactions between cell types that were predictive of the transcriptomic perturbation observed in the downstream cell type. This allowed creation of a directed multicellular disease model which reflected the altered information flow in disease. Using centrality in the MCDM we were able to rank cell types by their relative importance, which correlated well with the significance of GWAS enrichment among the DEGs of a cell type and the prediction precision for disease-relevant drugs.
+## Drug selection
+Drug selection is performed for each cell type individually and included network proximity and pharmacological action filtering. Firstly, mean closest network distance was calculated. Valid drug candidates tended to have a smaller than expected by chance mean network distance between their drug targets and disease-associated DEGs, additionally, they tended to target at least on disease-associated DEG directly. Pharmacological action filtering followed the simple assumption that drugs need to counteract disease-associated expression changes in order to treat immune-mediated inflammatory disease. To check this, we compared the fold change of directly targeted DEGs to the expected pharmacological action on that target and determined. See below:
+
+|                                    | **Upregulated DEGs**         | **Downregulated DEGs**           |
+|----------------------------------: |:----------------------------:| :-------------------------------:|
+|**Agonistic drug effect**           | Mimicking disease            | Counteracting disease            |
+|**Antagonistic drug effect**        | Counteracting disease        | Mimicking disease                |
+|**Drug effect on target not clear** | N/A                          | N/A                              |
+
+
+## Intercellular disease models (part of the MCDM)
+
+After drug selection, scDrugPrio will apply [NicheNet](https://github.com/saeyslab/nichenetr)[^1] to select ligand interactions between cell types that were predictive of the transcriptomic perturbation observed in the downstream cell type. This allowed creation of a directed multicellular disease model which reflect altered cell type signalling in disease. We found that cell type centrality in the MCDM correlated well with the significance of GWAS enrichment among the DEGs of a cell type and the prediction precision for disease-relevant drugs. In other words, drug candidates that targeted central cell types in the MCDM were more likely to be effective.
 
 <p align="center">
-  <img src="vignettes/Multicellular_disease_model.png" width="800" />  
+<img src="vignettes/MCDM.png" width="800" />  
 </p>
 
-## Intracellular disease models
+**Figure 3: Visualisation of a multicellular model for antigen induced arthritis.** In this network plot, each node represents a cell type and edges represent directed ligand interactions derived from NicheNet. For visual interpretation, edge width corresponds to the combined ligand effects on the downstream cell types gene expression (as measured by summed Pearson correlation coefficient). 
+
+
+## Intracellular disease models (part of the MCDM)
 
 Intracellular disease models refer to the modelling of a drug's effect on individual cell type's transcriptomic changes. We investigated such a relationship using three different approaches, namely:
 1. Average closest network distance calculation between drug targets and DEGs. Systematic calculations based on the DEGs of each cell type allowed capture of relevant drug candidates while preserving a high degree of biological difference between cell types.
