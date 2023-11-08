@@ -22,7 +22,7 @@ scDrugPrio presents a strategy for drug repositioning based on scRNA-seq based, 
 After scRNA-seq data had been denoised, clustered and differentially expressed genes (DEGs) had been calculated we applied [NicheNet](https://github.com/saeyslab/nichenetr)[^1] to select ligand-target interactions between cell types that were predictive of the transcriptomic perturbation observed in the downstream cell type. This allowed creation of a directed multicellular disease model which reflected the altered information flow in disease. Using centrality in the MCDM we were able to rank cell types by their relative importance, which correlated well with the significance of GWAS enrichment among the DEGs of a cell type and the prediction precision for disease-relevant drugs.
 
 <p align="center">
-  <img src="vignettes/MCDM.png" width="600" /> 
+  <img src="vignettes/Multicellular_disease_model.png" width="800" />  
 </p>
 
 ## Intracellular disease models
@@ -31,11 +31,6 @@ Intracellular disease models refer to the modelling of a drug's effect on indivi
 1. Average closest network distance calculation between drug targets and DEGs. Systematic calculations based on the DEGs of each cell type allowed capture of relevant drug candidates while preserving a high degree of biological difference between cell types.
 2. Eigenvector centrality of a drug's targets in the cell type specific disease module (defined as the largest connected component formed by a cell types DEGs in the PPIN). The intracellular centrality severed as a measure of pharmacological importance.
 3. The pharmacological effect of a drug on the targeted DEGs. Arguably, a drug should aim to restore transcriptomic homeostasis to be considered an elligable candidate for treatment. On the other hand, a drug that upregulates it's target (e.g. TNF) when the target (TNF) is already upregulated in disease-state is likely not a good candidate as it could worsen disease.
-
-<p align="center">
-  <img src="vignettes/Multicellular_disease_model.png" width="800" />  
-</p>
-
 
 ## Drug candidate selection
 
