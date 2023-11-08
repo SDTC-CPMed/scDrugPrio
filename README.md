@@ -67,20 +67,17 @@ After drug selection, scDrugPrio will apply [NicheNet](https://github.com/saeysl
 **Figure 3: Visualisation of a multicellular model for antigen induced arthritis.** In this network plot, each node represents a cell type and edges represent directed ligand interactions derived from NicheNet. For visual interpretation, edge width corresponds to the combined ligand effects on the downstream cell types gene expression (as measured by summed Pearson correlation coefficient). 
 
 
-## Intracellular disease models (part of the MCDM)
+## Intracellular disease models
 
-Intracellular disease models refer to the modelling of a drug's effect on individual cell type's transcriptomic changes. We investigated such a relationship using three different approaches, namely:
-1. Average closest network distance calculation between drug targets and DEGs. Systematic calculations based on the DEGs of each cell type allowed capture of relevant drug candidates while preserving a high degree of biological difference between cell types.
-2. Eigenvector centrality of a drug's targets in the cell type specific disease module (defined as the largest connected component formed by a cell types DEGs in the PPIN). The intracellular centrality severed as a measure of pharmacological importance.
-3. The pharmacological effect of a drug on the targeted DEGs. Arguably, a drug should aim to restore transcriptomic homeostasis to be considered an elligable candidate for treatment. On the other hand, a drug that upregulates it's target (e.g. TNF) when the target (TNF) is already upregulated in disease-state is likely not a good candidate as it could worsen disease.
+Intracellular disease models refer to the modelling of disease-associated changes in individual cell types. For this purpose, we use a network-based approach, mapping disease-associated DEGs onto the PPIN. Using the largest connected component formed by a cell types DEGs in the PPIN, we can then determine the centrality of each DEG for cell type specific disease.
+Arguably, a drug that targets more central disease-associated transcriptomic changes in a cell type will have a higher chance to exert an effect. scDrugPrio hence calculates the centrality of a drug's targets in the cell type specific disease module. This is referred to as a drugs intracellular centrality and severed as a measure of pharmacological importance in the drug ranking.
 
-## Drug candidate selection
-
-Drug candidates were selected for each cell type individually based on network proximity and pharmacological action on the drug targets. Specifically, drugs were selected based on dc < 1 as well as zc < -1.64 (that is one-sided P < 0.05 derived by comparison of dc to a random distribution). Furthermore, drug candidates were required to counteract the fold change of at least one targeted DEG to ensure that they had potential to restore transcriptomic homeostasis. These selection parameters were validated, for details we refer the reader to our manuscript ***INSERT LINK TO PREPRINT / MANUSCRIPT***.
 
 ## Drug candidate ranking
 
-While intracellular disease models, including the biopharmacological properties of the drugs and centrality of drug targets in the cell type specific disease models, were used to understand the pharmacological potential of a drug on a given cell type intercellular disease models were used to set each cell type into a context of relative importance for the collective disease. To rank drugs accordingly, we calculated the sum of all cell types eigenvector centrality in which a drug was considered to be a candidate. This combined intercellular eigenvector centrality served as a measure of the general importance of the targeted cell types in the MCDM. Next, we calculated the mean of a drug candidates intracellular eigenvector centrality over all cell types in which the drug was considered a candidate to derive a measure indicative of the average pharmacological potential of a drug on the targeted cell types. Final ranking was primarily based on the combined intercellular centrality score and secondly the mean of the intracellular eigenvector centrality. For more detail we refer the reader to the manuscript acompanying scDrugPrio ***LINK TO OUR PUBLICATION / PREPRINT***.
+Following drug selection and calculation of inter- and intracellular centrality, drug ranking was performed for all drugs that were a candidate in at least one cell type. For each drug, scDrugPrio calculates the sum of intercellular centralities including only cell types in which the drug was a candidate. This serves as an aggregate measure of how important the cell types targeted by a drug were within the MCDM. Next, scDrugPrio calculates the mean of a drug candidates intracellular eigenvector centrality over all cell types to derive a measure indicative of the average pharmacological potential of a drug on transcriptomic changes in all cell types. 
+Final ranking was based on an aggregate score of combined intercellular centrality and combined intracellular centrality. For more detail we refer the reader to the [manuscript](….link…).
+
 
 # Setup
 
