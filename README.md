@@ -5,6 +5,8 @@
 
 # scDrugPrio: A framework for the analysis of single-cell transcriptomics to address multiple problems in precision medicine in immune-mediated inflammatory diseases
 
+**S**wedish **D**igital **T**win **C**onsortium **-** **C**enter for **P**ersonalized **M**edicine
+
 ## General information
 
 scDrugPrio presents a framework for drug prioritisation and repositioning in immune-mediated inflammatory diseases (IMIDs) based on scRNA-seq based, multicellular disease models (MCDMs) that incorporate key biological and pharmacological properties. Using scRNA-seq-derived differentially expressed genes (DEGs) of either 1) one individual or 2) a group comparison between patients and controls, scDrugPrio starts by identifying cell type-specific drug candidates by considering both proximity in a protein‒protein interaction network and biopharmacological criteria. To rank drug candidates, scDrugPrio calculates two measures, intracellular and extracellular centrality. We used these two measures to capture two important drug properties, namely, 1) proficiency in targeting key disease-associated expression changes in a cell type and 2) the relative importance of the targeted cell type. These measures are then aggregated over all cell types to provide a final drug ranking.
