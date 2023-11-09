@@ -98,6 +98,20 @@ install.packages("devtools")
 devtools::install_github("SDTC-CPMed/scDrugPrio")
 ```
 
+## Example workflow
+
+To learn how to apply scDrugPrio to create multicellular digital twins for pharmacological predictions please refer to the vigenette:
+* [Workflow for scDrugPrio application to scRNA-seq data sets](vignettes/sample_workflow_scDrugPrio.md)
+
+# Creation of 3D network visualization for interaction between activated B cell DEGs and drug candidates
+
+In order to better understand the interactions between DEGs and potential drug candidates, selected based on zc < -1.64 and dc < 1, we created a [3D visualisation](https://scpred.shinyapps.io/3D_network/) for the most central cell type (activated B cells) in the antigen induced arthritis mouse data. Interactions between DEGs (blue) are representing protein-protein interactions (PPI) described in the literature-curated PPI network by do Valle et al.[^11]. DEGs node size is based on fold change. Potential drug candidates are connected to their respective gene drug targets by edges. Candidates are shown in red, established drugs for human rheumatoid arthritis are represented in yellow. The higher the absolute value of a drugs Y-axis value the higher the z-score. Drug candidates that counteracted at least one DEGs fold change received positive Y-axis values while drug candidates that did not counteract the fold change of any targeted DEG received negative Y-axis values. By clicking on one of the nodes, the neighbouring nodes are highlighted. This visualization allows the user to explore the importance of the  biopharmacological criteria. The 3D network was created in R version 4.1.1. The following R packages were used: igraph (1.2.6), plotly (4.10.0), shiny (1.6.0) and shinyjs (2.0.0).
+
+# Replication
+Deep Count Autoencoder (DCA)[^12] denoising was applied to each data set through calling the python application from the terminal. Raw expression data files can be found at the corresponding (GEO) repositories.
+
+Analysis of data sets can be replicated based on files uploaded to figshare. Files have to be downloaded manually, as figshare does not allow automated downloads due to requiring authentication. Upon having downloaded meta-data from figshare, we kindly ask that the user positions files and R codes as described in the `README.txt` file in respective R code collection (`inst/AIA`, `inst/MS`, `inst/pooled_CD`, `inst/Individual_CD`, `inst/anti_TNF_PsA` or `inst/anti_IL17_PsA`). To each code such collection a `MAIN.R` file has been added that specifies the order in which scripts should be run. Of note is that the replication with the codes will result in long run times and require up to 300GB RAM and access to up to 50 cores. These settings can be altered by the user in the codes if required.
+
 ## Input data
 
 scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536. Observe that the raw expression matrix is packaged as a .csv.gz file. If this leads to problems, we suggest decompressing by running ```find -name  'GSE193536_Joint_expression_matrix.csv.gz' -exec gzip -d {} \;``` in Linux command line.  Meta-data can be found on figshare [10.6084/m9.figshare.21785333](https://figshare.com/s/d75d0136702ba324c1d2).
@@ -110,19 +124,6 @@ scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession numb
 
 Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases can be found in [data-raw](data-raw/) or the supplementary files of the publication.
 
-## Example workflow
-
-To learn how to apply scDrugPrio to create multicellular digital twins for pharmacological predictions please refer to the vigenette:
-* [Workflow for scDrugPrio application to scRNA-seq data sets](vignettes/sample_workflow_scDrugPrio.md)
-
-## Creation of 3D network visualization for interaction between activated B cell DEGs and drug candidates
-
-In order to better understand the interactions between DEGs and potential drug candidates, selected based on zc < -1.64 and dc < 1, we created a [3D visualisation](https://scpred.shinyapps.io/3D_network/) for the most central cell type (activated B cells) in the antigen induced arthritis mouse data. Interactions between DEGs (blue) are representing protein-protein interactions (PPI) described in the literature-curated PPI network by do Valle et al.[^11]. DEGs node size is based on fold change. Potential drug candidates are connected to their respective gene drug targets by edges. Candidates are shown in red, established drugs for human rheumatoid arthritis are represented in yellow. The higher the absolute value of a drugs Y-axis value the higher the z-score. Drug candidates that counteracted at least one DEGs fold change received positive Y-axis values while drug candidates that did not counteract the fold change of any targeted DEG received negative Y-axis values. By clicking on one of the nodes, the neighbouring nodes are highlighted. This visualization allows the user to explore the importance of the  biopharmacological criteria. The 3D network was created in R version 4.1.1. The following R packages were used: igraph (1.2.6), plotly (4.10.0), shiny (1.6.0) and shinyjs (2.0.0).
-
-# Replication
-Deep Count Autoencoder (DCA)[^12] denoising was applied to each data set through calling the python application from the terminal. Raw expression data files can be found at the corresponding (GEO) repositories.
-
-Analysis of data sets can be replicated based on files uploaded to figshare. Files have to be downloaded manually, as figshare does not allow automated downloads due to requiring authentication. Upon having downloaded meta-data from figshare, we kindly ask that the user positions files and R codes as described in the `README.txt` file in respective R code collection (`inst/AIA`, `inst/MS`, `inst/pooled_CD`, `inst/Individual_CD`, `inst/anti_TNF_PsA` or `inst/anti_IL17_PsA`). To each code such collection a `MAIN.R` file has been added that specifies the order in which scripts should be run. Of note is that the replication with the codes will result in long run times and require up to 300GB RAM and access to up to 50 cores. These settings can be altered by the user in the codes if required.
 
 # References
 
