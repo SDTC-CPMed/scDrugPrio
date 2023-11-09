@@ -76,7 +76,7 @@ Arguably, a drug that targets more central disease-associated transcriptomic cha
 ## Drug candidate ranking
 
 Following drug selection and calculation of inter- and intracellular centrality, drug ranking was performed for all drugs that were a candidate in at least one cell type. For each drug, scDrugPrio calculates the sum of intercellular centralities including only cell types in which the drug was a candidate. This serves as an aggregate measure of how important the cell types targeted by a drug were within the MCDM. Next, scDrugPrio calculates the mean of a drug candidates intracellular eigenvector centrality over all cell types to derive a measure indicative of the average pharmacological potential of a drug on transcriptomic changes in all cell types. 
-Final ranking was based on an aggregate score of combined intercellular centrality and combined intracellular centrality. For more detail we refer the reader to the [manuscript](….link…).
+Final ranking was based on an aggregate score of combined intercellular centrality and combined intracellular centrality. For more detail we refer the reader to our [publication](….link…).
 
 
 # Setup
