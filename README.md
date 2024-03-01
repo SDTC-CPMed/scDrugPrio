@@ -122,7 +122,7 @@ scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE13826
 
 scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data for the pooled, batch-corrected analysis can be found on figshare [10.25452/figshare.plus.22343980](https://doi.org/10.25452/figshare.plus.22343980). Meta-data for the non-batch-corrected individual patient analyses can be found on [10.25452/figshare.plus.22344127](https://doi.org/10.25452/figshare.plus.22344127).
 
-scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending). Meta-data for the batch-corrected anti-TNF data set can be found on [10.25452/figshare.plus.22344145](https://doi.org/10.25452/figshare.plus.22344145 ) and the respective anti-IL17 dataset can be found on [10.25452/figshare.plus.22344175](https://doi.org/10.25452/figshare.plus.22344175).
+scRNA-seq data and meta-data for the psoriatic arthritis anti-TNF treatment data set can be found on [10.25452/figshare.plus.22344145](https://doi.org/10.25452/figshare.plus.22344145 ) and the respective anti-IL17 dataset can be found on [10.25452/figshare.plus.22344175](https://doi.org/10.25452/figshare.plus.22344175).
 
 Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases can be found in [data-raw](data-raw/) or the supplementary files of the publication.
 
