@@ -78,7 +78,7 @@ Arguably, a drug that targets more central disease-associated transcriptomic cha
 ## Drug candidate ranking
 
 Following drug selection and calculation of inter- and intracellular centrality, drug ranking was performed for all drugs that were a candidate in at least one cell type. For each drug, scDrugPrio calculates the sum of intercellular centralities including only cell types in which the drug was a candidate. This serves as an aggregate measure of how important the cell types targeted by a drug were within the MCDM. Next, scDrugPrio calculates the mean of a drug candidates intracellular eigenvector centrality over all cell types to derive a measure indicative of the average pharmacological potential of a drug on transcriptomic changes in all cell types. 
-Final ranking was based on an aggregate score of combined intercellular centrality and combined intracellular centrality. For more detail we refer the reader to our [publication](….link…).
+Final ranking was based on an aggregate score of combined intercellular centrality and combined intracellular centrality. For more detail we refer the reader to our [publication](https://www.biorxiv.org/content/10.1101/2023.11.08.566249v1).
 
 
 # Setup
@@ -116,13 +116,13 @@ Analysis of data sets can be replicated based on files uploaded to figshare. Fil
 
 ## Input data
 
-scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536. Observe that the raw expression matrix is packaged as a .csv.gz file. If this leads to problems, we suggest decompressing by running ```find -name  'GSE193536_Joint_expression_matrix.csv.gz' -exec gzip -d {} \;``` in Linux command line.  Meta-data can be found on figshare [10.25452/figshare.plus.22334848](https://figshare.com/s/6d674527e758972764cb).
+scRNA-seq data for the antigen-induced arthritis mouse model of rheumatoid arthritis can be downloaded from [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) (GEO) using accessionnumber GSE193536. Observe that the raw expression matrix is packaged as a .csv.gz file. If this leads to problems, we suggest decompressing by running ```find -name  'GSE193536_Joint_expression_matrix.csv.gz' -exec gzip -d {} \;``` in Linux command line.  Meta-data can be found on figshare [10.25452/figshare.plus.22334848](https://doi.org/10.25452/figshare.plus.22334848).
 
-scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^2]. Meta-data for the batch-corrected analysis can be found on figshare [10.25452/figshare.plus.22343932](https://figshare.com/s/cbc4f659f8d693a983be).
+scRNA-seq data for multiple sclerosis patients were retrieved from GEO (GSE138266)[^2]. Meta-data for the batch-corrected analysis can be found on figshare [10.25452/figshare.plus.22343932](https://doi.org/10.25452/figshare.plus.22343932).
 
-scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data for the pooled, batch-corrected analysis can be found on figshare [10.25452/figshare.plus.22343980](https://figshare.com/s/d0ca6f2edc79621288a7). Meta-data for the non-batch-corrected individual patient analyses can be found on [10.25452/figshare.plus.22344127](https://figshare.com/s/7ef40ba3c853be57945c).
+scRNA-seq data for Crohn's disease patients were retrieved from GEO (GSE134809)[^3]. Meta-data for the pooled, batch-corrected analysis can be found on figshare [10.25452/figshare.plus.22343980](https://doi.org/10.25452/figshare.plus.22343980). Meta-data for the non-batch-corrected individual patient analyses can be found on [10.25452/figshare.plus.22344127](https://doi.org/10.25452/figshare.plus.22344127).
 
-scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending). Meta-data for the batch-corrected anti-TNF data set can be found on [10.25452/figshare.plus.22344145](https://figshare.com/s/86aa92495c69a3194791) and the respective anti-IL17 dataset can be found on [10.25452/figshare.plus.22344175](https://figshare.com/s/b9bb54fbdeeab3d89273).
+scRNA-seq data for psoriatic arthritis can be retrieved from GEO (accession number pending). Meta-data for the batch-corrected anti-TNF data set can be found on [10.25452/figshare.plus.22344145](https://doi.org/10.25452/figshare.plus.22344145 ) and the respective anti-IL17 dataset can be found on [10.25452/figshare.plus.22344175](https://doi.org/10.25452/figshare.plus.22344175).
 
 Other imported data included the download of DrugBank[^4], GWAScatalog[^5], Online mendelian inheritence of man (OMIM)[^6], human-mouse homologs from NCBI and the HUGO Gene Nomenclature Committee (HGNC) annotation system[^7]. Furthermore, we included microarray data for rheumatoid arthritis from GSE55235[^8] and GSE93272[^9] as well as the HuRI PPIN[^10] for validation. Filtered versions of these data bases can be found in [data-raw](data-raw/) or the supplementary files of the publication.
 
