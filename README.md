@@ -12,7 +12,7 @@
 scDrugPrio presents a framework for drug prioritisation and repositioning in immune-mediated inflammatory diseases (IMIDs) based on scRNA-seq based, multicellular disease models (MCDMs) that incorporate key biological and pharmacological properties. Using scRNA-seq-derived differentially expressed genes (DEGs) of either 1) one individual or 2) a group comparison between patients and controls, scDrugPrio starts by identifying cell type-specific drug candidates by considering both proximity in a protein‒protein interaction network and biopharmacological criteria. To rank drug candidates, scDrugPrio calculates two measures, intracellular and extracellular centrality. We used these two measures to capture two important drug properties, namely, 1) proficiency in targeting key disease-associated expression changes in a cell type and 2) the relative importance of the targeted cell type. These measures are then aggregated over all cell types to provide a final drug ranking.
 Because of the complexity and heterogeneity of IMIDs, we started by developing scDrugPrio using scRNA-seq data from a mouse model of antigen-induced arthritis. This reduced heterogeneity since the mice are inbred and the disease induced in a standardised way. Moreover, the mouse model allowed extensive *in vitro* and *in vivo* validation studies. Results were even validated in human *in vitro* experiments. Furthermore, we applied scDrugPrio to human Crohn’s disease, multiple sclerosis and psoriatic arthritis and achieve high prediction precision for known drug-disease pairs. Individual drug predictions on Crohn’s disease patients revealed that scDrugPrio was able to distinguish individual Crohn’s patients that did or did not respond to anti-TNF treatment. 
 
-In the underlying [publication](https://www.biorxiv.org/content/10.1101/2023.11.08.566249v1) we exemplify the following case-of-use scenarios for scDrugPrio:
+In the underlying [publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-024-01314-7) we exemplify the following case-of-use scenarios for scDrugPrio:
 -	Drug repurposing predictions
 -	Drug prioritisation for pooled patient data
 -	Drug prioritisation for individual patient data
@@ -78,7 +78,7 @@ Arguably, a drug that targets more central disease-associated transcriptomic cha
 ## Drug candidate ranking
 
 Following drug selection and calculation of inter- and intracellular centrality, drug ranking was performed for all drugs that were a candidate in at least one cell type. For each drug, scDrugPrio calculates the sum of intercellular centralities including only cell types in which the drug was a candidate. This serves as an aggregate measure of how important the cell types targeted by a drug were within the MCDM. Next, scDrugPrio calculates the mean of a drug candidates intracellular eigenvector centrality over all cell types to derive a measure indicative of the average pharmacological potential of a drug on transcriptomic changes in all cell types. 
-Final ranking was based on an aggregate score of combined intercellular centrality and combined intracellular centrality. For more detail we refer the reader to our [publication](https://www.biorxiv.org/content/10.1101/2023.11.08.566249v1).
+Final ranking was based on an aggregate score of combined intercellular centrality and combined intracellular centrality. For more detail we refer the reader to our [publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-024-01314-7).
 
 
 # Setup
